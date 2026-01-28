@@ -129,20 +129,49 @@
         .tabs-container {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
-            padding: 10px;
+            padding: 15px;
             margin-bottom: 20px;
-            overflow-x: auto;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         }
-        
+
+        /* PC: 2열 그리드 */
         .tabs {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
-            min-width: max-content;
         }
-        
+
+        /* 모바일: select 드롭다운 */
+        .category-select {
+            display: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #e4e4e4;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e4e4e4' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .category-select:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .category-select option {
+            background: #1a1a2e;
+            color: #e4e4e4;
+            padding: 10px;
+        }
+
         .tab {
-            padding: 12px 20px;
+            padding: 12px 16px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.05);
             cursor: pointer;
@@ -150,19 +179,21 @@
             border: 2px solid transparent;
             white-space: nowrap;
             font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
         }
-        
+
         .tab:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
-        
+
         .tab.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-color: rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
-        
+
         .tab-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
@@ -170,6 +201,44 @@
             border-radius: 12px;
             font-size: 0.75rem;
             margin-left: 8px;
+        }
+
+        /* 퀘스트 버튼 */
+        .quest-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .quest-toggle label {
+            font-weight: 600;
+            color: #a0aec0;
+        }
+
+        .quest-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .quest-bonus {
+            color: #00ff88;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                display: none;
+            }
+            .category-select {
+                display: block;
+            }
         }
         
         .search-box {
@@ -263,6 +332,14 @@
             margin-bottom: 12px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
             border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .skill-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
         }
         
         .skill-name {
@@ -446,7 +523,11 @@
                     <div class="stat-value" id="totalPoints">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">필요 레벨</div>
+                    <div class="stat-label">남은 포인트</div>
+                    <div class="stat-value" id="remainingPoints">77</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">필요 레벨 (최대 50)</div>
                     <div class="stat-value" id="requiredLevel">1</div>
                 </div>
                 <div class="stat-card">
@@ -462,8 +543,12 @@
                     <div class="stat-value" id="intellectStat">0</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-label">스탯 합계 (제한: 60)</div>
+                    <div class="stat-value" id="statLimit">0 / 60</div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-label">스킬 습득</div>
-                    <div class="stat-value" id="skillsLearned">0 / 305</div>
+                    <div class="stat-value" id="skillsLearned">0 / 139</div>
                 </div>
             </div>
             
@@ -483,7 +568,16 @@
             </div>
         </div>
         
+        <div class="quest-toggle">
+            <label for="questCheckbox">퀘스트 완료</label>
+            <input type="checkbox" id="questCheckbox" class="quest-checkbox" onchange="toggleQuest()">
+            <span class="quest-bonus" id="questBonusText">(+18 포인트)</span>
+        </div>
+
         <div class="tabs-container">
+            <!-- 모바일: 셀렉트 드롭다운 -->
+            <select class="category-select" id="categorySelect" onchange="switchCategoryFromSelect()"></select>
+            <!-- PC: 2열 그리드 탭 -->
             <div class="tabs" id="categoryTabs"></div>
         </div>
         
@@ -513,393 +607,251 @@
     <div class="tooltip" id="tooltip"></div>
     
     <script>
+        // skill_mapping.md 기반 139개 스킬 데이터
         const skillsData = {
-            "화염 마법": [
-                {id: 1, name: "화염 화살", maxLevel: 5},
-                {id: 6, name: "화염구", maxLevel: 5},
-                {id: 11, name: "이글거리는 주먹", maxLevel: 5},
-                {id: 16, name: "꺼지지 않는 지옥불", maxLevel: 3},
-                {id: 21, name: "태양풍", maxLevel: 5},
-                {id: 26, name: "불기둥", maxLevel: 5},
-                {id: 31, name: "플레어", maxLevel: 3},
-                {id: 36, name: "화염 마법 숙련", maxLevel: 3},
-                {id: 40, name: "화형", maxLevel: 3},
-                {id: 45, name: "화상", maxLevel: 3},
-                {id: 50, name: "화염 폭풍", maxLevel: 5}
+            "화염마법": [
+                {id: 1, name: "화염화살", maxLevel: 5},
+                {id: 2, name: "화염구", maxLevel: 5},
+                {id: 3, name: "이글거리는 주먹", maxLevel: 5},
+                {id: 4, name: "꺼지지않는 지옥불", maxLevel: 5},
+                {id: 5, name: "태양풍", maxLevel: 5},
+                {id: 6, name: "불기둥", maxLevel: 5},
+                {id: 7, name: "플레어", maxLevel: 5},
+                {id: 8, name: "화염마법숙련", maxLevel: 5},
+                {id: 9, name: "화형", maxLevel: 5},
+                {id: 10, name: "화상", maxLevel: 5}
             ],
-            "얼음 마법": [
-                {id: 72, name: "얼음 화살", maxLevel: 5},
-                {id: 77, name: "얼음 창", maxLevel: 5},
-                {id: 82, name: "저체온증", maxLevel: 3},
-                {id: 87, name: "한기 작렬", maxLevel: 5},
-                {id: 92, name: "아이스 노바", maxLevel: 5},
-                {id: 97, name: "혹한", maxLevel: 3},
-                {id: 102, name: "냉기 팽창", maxLevel: 3},
-                {id: 107, name: "얼음 송곳", maxLevel: 5},
-                {id: 112, name: "죽음의 한기", maxLevel: 1},
-                {id: 117, name: "얼음 마법 숙련", maxLevel: 3},
-                {id: 122, name: "빙결", maxLevel: 3},
-                {id: 127, name: "동상", maxLevel: 3},
-                {id: 132, name: "냉기 파동", maxLevel: 5},
-                {id: 137, name: "절대영도", maxLevel: 1},
-                {id: 142, name: "얼음 감옥", maxLevel: 3},
-                {id: 147, name: "한파", maxLevel: 5},
-                {id: 152, name: "서리 갑옷", maxLevel: 3},
-                {id: 157, name: "빙하기", maxLevel: 3},
-                {id: 162, name: "눈보라", maxLevel: 5},
-                {id: 167, name: "얼음 폭발", maxLevel: 3},
-                {id: 172, name: "크리스탈 실드", maxLevel: 3}
+            "얼음마법": [
+                {id: 11, name: "얼음화살", maxLevel: 5},
+                {id: 12, name: "얼음창", maxLevel: 5},
+                {id: 13, name: "저체온증", maxLevel: 5},
+                {id: 14, name: "한기 작렬", maxLevel: 5},
+                {id: 15, name: "아이스 노바", maxLevel: 5},
+                {id: 16, name: "혹한", maxLevel: 5},
+                {id: 17, name: "냉기 팽창", maxLevel: 5},
+                {id: 18, name: "얼음 송곳", maxLevel: 5},
+                {id: 19, name: "죽음의 한기", maxLevel: 5},
+                {id: 20, name: "얼음마법숙련", maxLevel: 5}
             ],
-            "번개 마법": [
-                {id: 143, name: "번개 화살", maxLevel: 5},
-                {id: 148, name: "뇌격", maxLevel: 5},
-                {id: 153, name: "방전", maxLevel: 5},
-                {id: 158, name: "불안정한 낙뢰", maxLevel: 3},
-                {id: 163, name: "초방전 유도체", maxLevel: 3},
-                {id: 168, name: "적란운", maxLevel: 5},
-                {id: 173, name: "뇌기창", maxLevel: 5},
-                {id: 178, name: "번개 마법 숙련", maxLevel: 3},
-                {id: 182, name: "태풍", maxLevel: 3},
-                {id: 187, name: "전하", maxLevel: 3},
-                {id: 192, name: "전격", maxLevel: 5},
-                {id: 197, name: "전류", maxLevel: 3},
-                {id: 202, name: "낙뢰", maxLevel: 5},
-                {id: 207, name: "천둥", maxLevel: 3},
-                {id: 212, name: "플라즈마", maxLevel: 1},
-                {id: 217, name: "전자기장", maxLevel: 3},
-                {id: 222, name: "이온화", maxLevel: 3},
-                {id: 227, name: "전자파", maxLevel: 5},
-                {id: 232, name: "정전기", maxLevel: 3},
-                {id: 237, name: "번개 폭풍", maxLevel: 5}
+            "전기마법": [
+                {id: 21, name: "번개화살", maxLevel: 5},
+                {id: 22, name: "뇌격", maxLevel: 5},
+                {id: 23, name: "방전", maxLevel: 5},
+                {id: 24, name: "불안정한낙뢰", maxLevel: 5},
+                {id: 25, name: "초방전 유도체", maxLevel: 5},
+                {id: 26, name: "적란운", maxLevel: 5},
+                {id: 27, name: "뇌기창", maxLevel: 5},
+                {id: 28, name: "번개 마법 숙련", maxLevel: 5},
+                {id: 29, name: "태풍", maxLevel: 5},
+                {id: 30, name: "전하", maxLevel: 5}
             ],
-            "초능력 마법": [
-                {id: 214, name: "초능력 방패", maxLevel: 1},
-                {id: 219, name: "마나 보호막", maxLevel: 1},
-                {id: 224, name: "정신 집중", maxLevel: 3},
-                {id: 229, name: "염력", maxLevel: 5},
-                {id: 234, name: "텔레파시", maxLevel: 3},
-                {id: 239, name: "예지", maxLevel: 1},
-                {id: 244, name: "순간이동", maxLevel: 3},
-                {id: 249, name: "정신 지배", maxLevel: 5},
-                {id: 254, name: "환영", maxLevel: 3},
-                {id: 259, name: "공간 왜곡", maxLevel: 5},
-                {id: 264, name: "시간 정지", maxLevel: 1},
-                {id: 269, name: "차원 이동", maxLevel: 3},
-                {id: 274, name: "초능력 폭발", maxLevel: 5}
+            "초능력마법": [
+                {id: 31, name: "초능력 방패", maxLevel: 5},
+                {id: 32, name: "마나 보호막", maxLevel: 5}
             ],
-            "융합 마법": [
-                {id: 286, name: "용암 도끼", maxLevel: 5},
-                {id: 291, name: "초열 선륜", maxLevel: 5},
-                {id: 296, name: "고드름 쇄도", maxLevel: 5},
-                {id: 301, name: "뇌염", maxLevel: 3},
-                {id: 306, name: "빙뢰", maxLevel: 3},
-                {id: 311, name: "증기 폭발", maxLevel: 5},
-                {id: 316, name: "용암 분출", maxLevel: 5},
-                {id: 321, name: "극한 융합", maxLevel: 1},
-                {id: 326, name: "원소 조화", maxLevel: 3},
-                {id: 331, name: "마법 융합", maxLevel: 5},
-                {id: 336, name: "원소 폭발", maxLevel: 5},
-                {id: 341, name: "카오스 매직", maxLevel: 3},
-                {id: 346, name: "원소의 힘", maxLevel: 5},
-                {id: 351, name: "마법 결합", maxLevel: 3}
+            "융합마법": [
+                {id: 33, name: "용암 도끼", maxLevel: 5},
+                {id: 34, name: "초열 선륜", maxLevel: 5},
+                {id: 35, name: "고드름쇄도", maxLevel: 5}
             ],
-            "힘 능력": [
-                {id: 358, name: "공격 자세", maxLevel: 5},
-                {id: 363, name: "무기의 달인", maxLevel: 5},
-                {id: 368, name: "뭉개기", maxLevel: 5},
-                {id: 373, name: "강력한 반격", maxLevel: 3},
-                {id: 378, name: "깊은 상처", maxLevel: 5},
-                {id: 383, name: "충격", maxLevel: 5},
-                {id: 388, name: "마무리 일격", maxLevel: 5},
-                {id: 393, name: "전투형 근육", maxLevel: 5},
-                {id: 398, name: "뇌진탕", maxLevel: 1},
-                {id: 403, name: "전투 호흡", maxLevel: 5},
-                {id: 408, name: "강타", maxLevel: 5},
-                {id: 413, name: "분쇄", maxLevel: 3},
-                {id: 418, name: "타격 강화", maxLevel: 5},
-                {id: 423, name: "파워 어택", maxLevel: 5},
-                {id: 428, name: "필살기", maxLevel: 1},
-                {id: 433, name: "전력 질주", maxLevel: 3},
-                {id: 438, name: "돌격", maxLevel: 5},
-                {id: 443, name: "무력화", maxLevel: 3},
-                {id: 448, name: "광전사", maxLevel: 5},
-                {id: 453, name: "버서커", maxLevel: 3},
-                {id: 458, name: "최후의 일격", maxLevel: 1}
+            "힘능력": [
+                {id: 36, name: "공격 자세", maxLevel: 5},
+                {id: 37, name: "무기의 달인", maxLevel: 5},
+                {id: 38, name: "뭉개기", maxLevel: 5},
+                {id: 39, name: "강력한 반격", maxLevel: 5},
+                {id: 40, name: "깊은 상처", maxLevel: 5},
+                {id: 41, name: "충격", maxLevel: 5},
+                {id: 42, name: "마무리 일격", maxLevel: 5},
+                {id: 43, name: "전투형 근육", maxLevel: 5},
+                {id: 44, name: "뇌진탕", maxLevel: 5},
+                {id: 45, name: "전투 호흡", maxLevel: 5}
             ],
-            "민첩 능력": [
-                {id: 430, name: "급소 연구", maxLevel: 3},
-                {id: 435, name: "급소 연구 II", maxLevel: 5},
-                {id: 440, name: "치명적인 사격", maxLevel: 5},
-                {id: 445, name: "약점", maxLevel: 5},
-                {id: 450, name: "얼굴 뭉개기", maxLevel: 5},
-                {id: 455, name: "틈새 공략", maxLevel: 3},
-                {id: 460, name: "반격", maxLevel: 5},
-                {id: 465, name: "숙련된 쳐내기", maxLevel: 5},
-                {id: 470, name: "발전된 급소 연구", maxLevel: 5},
-                {id: 475, name: "재빠른 몸놀림", maxLevel: 5},
-                {id: 480, name: "회피", maxLevel: 5},
-                {id: 485, name: "반사신경", maxLevel: 3},
-                {id: 490, name: "순발력", maxLevel: 5},
-                {id: 495, name: "신속", maxLevel: 3},
-                {id: 500, name: "빠른 손놀림", maxLevel: 5},
-                {id: 505, name: "민첩성 강화", maxLevel: 5},
-                {id: 510, name: "질풍", maxLevel: 3},
-                {id: 515, name: "그림자 발걸음", maxLevel: 5},
-                {id: 520, name: "잔상", maxLevel: 3},
-                {id: 525, name: "순간 가속", maxLevel: 1},
-                {id: 530, name: "연속 공격", maxLevel: 5}
+            "민첩능력": [
+                {id: 46, name: "급소 연구", maxLevel: 5},
+                {id: 47, name: "급소연구 II", maxLevel: 5},
+                {id: 48, name: "치명적인 사격", maxLevel: 5},
+                {id: 49, name: "약점", maxLevel: 5},
+                {id: 50, name: "얼굴 뭉개기", maxLevel: 5},
+                {id: 51, name: "틈새 공략", maxLevel: 5},
+                {id: 52, name: "반격", maxLevel: 5},
+                {id: 53, name: "숙련된 처내기", maxLevel: 5},
+                {id: 54, name: "발전된 급소 연구", maxLevel: 5},
+                {id: 55, name: "재빠른 몸놀림", maxLevel: 5}
             ],
-            "보조 능력": [
-                {id: 502, name: "몸집 불리기", maxLevel: 5},
-                {id: 507, name: "무술", maxLevel: 2},
-                {id: 512, name: "마나 샘", maxLevel: 5},
-                {id: 517, name: "빠른 신진대사", maxLevel: 2},
-                {id: 522, name: "죽고자 하면 살 것이다", maxLevel: 1},
-                {id: 527, name: "마법 유물", maxLevel: 5},
-                {id: 531, name: "아슬아슬한 쳐내기", maxLevel: 1},
-                {id: 536, name: "손은 눈보다 빠르다", maxLevel: 1},
-                {id: 541, name: "마력 조작", maxLevel: 2},
-                {id: 546, name: "자연 친화력", maxLevel: 5},
-                {id: 551, name: "운수 좋은 날", maxLevel: 1},
-                {id: 556, name: "환류", maxLevel: 3},
-                {id: 561, name: "돌 피부", maxLevel: 4},
-                {id: 566, name: "부등가 교환", maxLevel: 1},
-                {id: 571, name: "원소 친화력", maxLevel: 5},
-                {id: 576, name: "생명력 증가", maxLevel: 5},
-                {id: 581, name: "마나 재생", maxLevel: 5},
-                {id: 586, name: "정신력", maxLevel: 3},
-                {id: 591, name: "집중력", maxLevel: 5},
-                {id: 596, name: "인내", maxLevel: 3},
-                {id: 601, name: "지구력", maxLevel: 5},
-                {id: 606, name: "회복력", maxLevel: 5},
-                {id: 611, name: "저항력", maxLevel: 3},
-                {id: 616, name: "면역력", maxLevel: 1},
-                {id: 621, name: "활력", maxLevel: 5},
-                {id: 626, name: "기력 회복", maxLevel: 3}
+            "보조능력": [
+                {id: 56, name: "몹집 불리기", maxLevel: 5},
+                {id: 57, name: "무술", maxLevel: 5},
+                {id: 58, name: "마나 샘", maxLevel: 5},
+                {id: 59, name: "빠른 신진대사", maxLevel: 5},
+                {id: 60, name: "죽고자 하면 살 것이다", maxLevel: 5},
+                {id: 61, name: "마법 유물", maxLevel: 5},
+                {id: 62, name: "아슬아슬한 처내기", maxLevel: 5},
+                {id: 63, name: "손은 눈보다 빠르다", maxLevel: 5},
+                {id: 64, name: "마력 조작", maxLevel: 5},
+                {id: 65, name: "자연 친화력", maxLevel: 5},
+                {id: 66, name: "운수 좋은 날", maxLevel: 5},
+                {id: 67, name: "환류", maxLevel: 5},
+                {id: 68, name: "돌 피부", maxLevel: 5},
+                {id: 69, name: "부등가 교환", maxLevel: 5},
+                {id: 70, name: "원소 친화력", maxLevel: 5}
             ],
-            "조화 능력": [
-                {id: 573, name: "필살", maxLevel: 5},
-                {id: 578, name: "방랑 무사", maxLevel: 5},
-                {id: 583, name: "단전 개방", maxLevel: 5},
-                {id: 588, name: "근육 밀도 증가", maxLevel: 5},
-                {id: 593, name: "최상위 포식자", maxLevel: 5},
-                {id: 598, name: "폭발적 마나 분출", maxLevel: 5},
-                {id: 603, name: "만인지적", maxLevel: 2},
-                {id: 608, name: "환골탈태", maxLevel: 1},
-                {id: 613, name: "그림자의 길", maxLevel: 5},
-                {id: 618, name: "체내 마나 순환", maxLevel: 5},
-                {id: 623, name: "워록", maxLevel: 5},
-                {id: 628, name: "잔류 마나 응결", maxLevel: 4},
-                {id: 633, name: "근성 강화", maxLevel: 1},
-                {id: 638, name: "깨달음", maxLevel: 1},
-                {id: 643, name: "초월", maxLevel: 3},
-                {id: 648, name: "각성", maxLevel: 5},
-                {id: 653, name: "내면의 힘", maxLevel: 5},
-                {id: 658, name: "균형", maxLevel: 3},
-                {id: 663, name: "조화로운 힘", maxLevel: 5},
-                {id: 668, name: "완전체", maxLevel: 1},
-                {id: 673, name: "신체 강화", maxLevel: 5},
-                {id: 678, name: "기공", maxLevel: 5},
-                {id: 683, name: "내공 순환", maxLevel: 3},
-                {id: 688, name: "기 폭발", maxLevel: 5},
-                {id: 693, name: "진기 운용", maxLevel: 5},
-                {id: 698, name: "무공 정진", maxLevel: 3},
-                {id: 703, name: "달인의 경지", maxLevel: 1},
-                {id: 708, name: "극의", maxLevel: 5},
-                {id: 713, name: "오의", maxLevel: 3}
+            "조화능력": [
+                {id: 71, name: "필살", maxLevel: 5},
+                {id: 72, name: "방랑 무사", maxLevel: 5},
+                {id: 73, name: "단전 개방", maxLevel: 5},
+                {id: 74, name: "근육 밀도 증가", maxLevel: 5},
+                {id: 75, name: "최상위 포식자", maxLevel: 5},
+                {id: 76, name: "폭발적 마나 분출", maxLevel: 5},
+                {id: 77, name: "만인지적", maxLevel: 5},
+                {id: 78, name: "환골탈태", maxLevel: 5},
+                {id: 79, name: "그림자의 길", maxLevel: 5},
+                {id: 80, name: "체내 마나 순환", maxLevel: 5},
+                {id: 81, name: "워록", maxLevel: 5},
+                {id: 82, name: "잔류 마나 응결", maxLevel: 5},
+                {id: 83, name: "근성 강화", maxLevel: 5},
+                {id: 84, name: "깨달음", maxLevel: 5}
             ],
-            "용맹 특성": [
-                {id: 645, name: "하프 소딩", maxLevel: 3},
-                {id: 650, name: "쿤스트 데스 페히튼스", maxLevel: 5},
-                {id: 655, name: "막을 수 없는 자", maxLevel: 5},
-                {id: 660, name: "전쟁광", maxLevel: 5},
-                {id: 665, name: "수박 깨기", maxLevel: 4},
-                {id: 670, name: "방벽", maxLevel: 5},
-                {id: 675, name: "처형자", maxLevel: 4},
-                {id: 680, name: "강인함", maxLevel: 5},
-                {id: 685, name: "중보병", maxLevel: 2},
-                {id: 690, name: "도살자", maxLevel: 4},
-                {id: 695, name: "초인적 반응", maxLevel: 3},
-                {id: 700, name: "가시 갑옷", maxLevel: 5},
-                {id: 705, name: "묵사발 A", maxLevel: 2},
-                {id: 710, name: "나는 서서 죽는다", maxLevel: 4},
-                {id: 715, name: "묵사발 B", maxLevel: 2},
-                {id: 720, name: "불굴의 의지", maxLevel: 5},
-                {id: 725, name: "전사의 혼", maxLevel: 3},
-                {id: 730, name: "투쟁 본능", maxLevel: 5},
-                {id: 735, name: "피의 갈증", maxLevel: 5},
-                {id: 740, name: "잔혹함", maxLevel: 3},
-                {id: 745, name: "전장의 지배자", maxLevel: 1},
-                {id: 750, name: "용맹", maxLevel: 5},
-                {id: 755, name: "광기", maxLevel: 3},
-                {id: 760, name: "전투 광란", maxLevel: 5},
-                {id: 765, name: "살육 본능", maxLevel: 5},
-                {id: 770, name: "혈전", maxLevel: 3},
-                {id: 775, name: "결사 항전", maxLevel: 5},
-                {id: 780, name: "최후의 저항", maxLevel: 1},
-                {id: 785, name: "불사신", maxLevel: 3}
+            "용맹특성": [
+                {id: 85, name: "하프 소딩", maxLevel: 3},
+                {id: 86, name: "쿤스트 데스 페히톤스", maxLevel: 3},
+                {id: 87, name: "막을 수 없는 자", maxLevel: 3},
+                {id: 88, name: "전쟁광", maxLevel: 3},
+                {id: 89, name: "수박 깨기", maxLevel: 3},
+                {id: 90, name: "방벽", maxLevel: 3},
+                {id: 91, name: "처형자", maxLevel: 3},
+                {id: 92, name: "강인함", maxLevel: 3},
+                {id: 93, name: "중보병", maxLevel: 3},
+                {id: 94, name: "도살자", maxLevel: 3},
+                {id: 95, name: "초인적 반응", maxLevel: 3},
+                {id: 96, name: "가시 갑옷", maxLevel: 3},
+                {id: 97, name: "묵사발 A", maxLevel: 3},
+                {id: 98, name: "나는 서서 죽는다", maxLevel: 3},
+                {id: 99, name: "묵사발 B", maxLevel: 3}
             ],
-            "강인 특성": [
-                {id: 717, name: "비장의 수", maxLevel: 4},
-                {id: 722, name: "근지구력 강화", maxLevel: 5},
-                {id: 727, name: "지저분한 절단", maxLevel: 1},
-                {id: 732, name: "캄프링겐", maxLevel: 5},
-                {id: 737, name: "팡크라티온", maxLevel: 3},
-                {id: 742, name: "무자비한 처형", maxLevel: 3},
-                {id: 747, name: "결투용 검술", maxLevel: 5},
-                {id: 752, name: "콤비네이션", maxLevel: 3},
-                {id: 757, name: "쌍수 무기", maxLevel: 5},
-                {id: 762, name: "인피르무스", maxLevel: 5},
-                {id: 767, name: "보디 블로", maxLevel: 2},
-                {id: 772, name: "투지", maxLevel: 5},
-                {id: 777, name: "강철 신체", maxLevel: 5},
-                {id: 782, name: "단련된 육체", maxLevel: 3},
-                {id: 787, name: "철벽 방어", maxLevel: 5},
-                {id: 792, name: "방패술", maxLevel: 5},
-                {id: 797, name: "수비 태세", maxLevel: 3},
-                {id: 802, name: "견고함", maxLevel: 5},
-                {id: 807, name: "불굴", maxLevel: 3},
-                {id: 812, name: "강인한 체력", maxLevel: 5},
-                {id: 817, name: "내구력", maxLevel: 5},
-                {id: 822, name: "버팀", maxLevel: 3},
-                {id: 827, name: "저항", maxLevel: 5},
-                {id: 832, name: "방어 강화", maxLevel: 5},
-                {id: 837, name: "철옹성", maxLevel: 3},
-                {id: 842, name: "요새", maxLevel: 1},
-                {id: 847, name: "불패", maxLevel: 5},
-                {id: 852, name: "철벽", maxLevel: 3}
+            "강인특성": [
+                {id: 100, name: "비장의 수", maxLevel: 3},
+                {id: 101, name: "근주구력 강화", maxLevel: 3},
+                {id: 102, name: "지저분한 절단", maxLevel: 3},
+                {id: 103, name: "캄프링겐", maxLevel: 3},
+                {id: 104, name: "팡크라티온", maxLevel: 3},
+                {id: 105, name: "무자비한 처형", maxLevel: 3},
+                {id: 106, name: "결투용 검술", maxLevel: 3},
+                {id: 107, name: "콤비네이션", maxLevel: 3},
+                {id: 108, name: "쌍수 무기", maxLevel: 3},
+                {id: 109, name: "인피르무스", maxLevel: 3},
+                {id: 110, name: "보디 블로", maxLevel: 3},
+                {id: 111, name: "투지", maxLevel: 3},
+                {id: 112, name: "롤링 펀치", maxLevel: 3}
             ],
-            "고독 특성": [
-                {id: 789, name: "뛰어난 손재주", maxLevel: 1},
-                {id: 794, name: "경추 절단", maxLevel: 3},
-                {id: 799, name: "집중", maxLevel: 3},
-                {id: 804, name: "어둠숲 궁술", maxLevel: 1},
-                {id: 809, name: "낮은 자세", maxLevel: 2},
-                {id: 814, name: "긴 도약", maxLevel: 1},
-                {id: 819, name: "손목 공격", maxLevel: 4},
-                {id: 824, name: "난도질", maxLevel: 3},
-                {id: 829, name: "회피", maxLevel: 1},
-                {id: 834, name: "스워시 버클러", maxLevel: 5},
-                {id: 839, name: "희미한 존재감", maxLevel: 2},
-                {id: 844, name: "집중 II", maxLevel: 2},
-                {id: 849, name: "연사", maxLevel: 5},
-                {id: 854, name: "가벼운 발놀림", maxLevel: 2},
-                {id: 859, name: "라이슬로퍼", maxLevel: 5},
-                {id: 864, name: "공중 암살", maxLevel: 1},
-                {id: 869, name: "저격수", maxLevel: 5},
-                {id: 874, name: "수술", maxLevel: 1},
-                {id: 879, name: "예리한 칼날 II", maxLevel: 3},
-                {id: 884, name: "사냥꾼", maxLevel: 3},
-                {id: 889, name: "머리 겨냥", maxLevel: 5},
-                {id: 894, name: "암습", maxLevel: 5},
-                {id: 899, name: "기습", maxLevel: 3},
-                {id: 904, name: "잠행", maxLevel: 5},
-                {id: 909, name: "은신술", maxLevel: 5},
-                {id: 914, name: "그림자 융합", maxLevel: 3},
-                {id: 919, name: "암살", maxLevel: 1},
-                {id: 924, name: "독살", maxLevel: 3}
+            "고독특성": [
+                {id: 113, name: "연격", maxLevel: 3},
+                {id: 114, name: "뛰어난 손재주", maxLevel: 3},
+                {id: 115, name: "어둠숲 궁술", maxLevel: 3},
+                {id: 116, name: "손목 공격", maxLevel: 3},
+                {id: 117, name: "스위시 버클러", maxLevel: 3},
+                {id: 118, name: "연사", maxLevel: 3},
+                {id: 119, name: "예리한 칼날", maxLevel: 3},
+                {id: 120, name: "라이슬로퍼", maxLevel: 3},
+                {id: 121, name: "저격수", maxLevel: 3},
+                {id: 122, name: "예리한 칼날II", maxLevel: 3},
+                {id: 123, name: "사냥꾼", maxLevel: 3},
+                {id: 124, name: "머리 겨냥", maxLevel: 3},
+                {id: 125, name: "연격 II", maxLevel: 3}
             ],
-            "교활 특성": [
-                {id: 857, name: "연격", maxLevel: 5},
-                {id: 862, name: "은신", maxLevel: 5},
-                {id: 867, name: "도약", maxLevel: 1},
-                {id: 872, name: "연격 II", maxLevel: 2},
-                {id: 877, name: "근성 강화", maxLevel: 1},
-                {id: 882, name: "깨달음", maxLevel: 1},
-                {id: 887, name: "롤링 펀치", maxLevel: 3},
-                {id: 892, name: "묵사발 A", maxLevel: 2},
-                {id: 897, name: "나는 서서 죽는다", maxLevel: 4},
-                {id: 902, name: "묵사발 B", maxLevel: 2},
-                {id: 907, name: "함정 제작", maxLevel: 5},
-                {id: 912, name: "독 제조", maxLevel: 5},
-                {id: 917, name: "교묘한 속임수", maxLevel: 3},
-                {id: 922, name: "위장", maxLevel: 5},
-                {id: 927, name: "속이기", maxLevel: 3},
-                {id: 932, name: "기만", maxLevel: 5},
-                {id: 937, name: "허세", maxLevel: 3},
-                {id: 942, name: "유혹", maxLevel: 5},
-                {id: 947, name: "협상", maxLevel: 5},
-                {id: 952, name: "설득", maxLevel: 3},
-                {id: 957, name: "교묘함", maxLevel: 5},
-                {id: 962, name: "술수", maxLevel: 3},
-                {id: 967, name: "간계", maxLevel: 1},
-                {id: 972, name: "책략", maxLevel: 5}
+            "교활특성": [
+                {id: 126, name: "은신", maxLevel: 3},
+                {id: 127, name: "경추 절단", maxLevel: 3},
+                {id: 128, name: "낮은 자세", maxLevel: 3},
+                {id: 129, name: "난도질", maxLevel: 3},
+                {id: 130, name: "희미한 존재감", maxLevel: 3},
+                {id: 131, name: "가벼운 발놀림", maxLevel: 3},
+                {id: 132, name: "신경 끊기", maxLevel: 3},
+                {id: 133, name: "공중 암살", maxLevel: 3},
+                {id: 134, name: "수술", maxLevel: 3}
             ],
-            "유용 특성": [
-                {id: 975, name: "도약", maxLevel: 1},
-                {id: 980, name: "돌 피부", maxLevel: 4},
-                {id: 985, name: "부등가 교환", maxLevel: 1},
-                {id: 990, name: "원소 친화력", maxLevel: 5},
-                {id: 995, name: "행운", maxLevel: 5},
-                {id: 1000, name: "탐지", maxLevel: 3},
-                {id: 1005, name: "지도 제작", maxLevel: 5},
-                {id: 1010, name: "채집", maxLevel: 5},
-                {id: 1015, name: "채광", maxLevel: 5},
-                {id: 1020, name: "낚시", maxLevel: 3},
-                {id: 1025, name: "요리", maxLevel: 5},
-                {id: 1030, name: "연금술", maxLevel: 5},
-                {id: 1035, name: "대장장이", maxLevel: 3},
-                {id: 1040, name: "재봉술", maxLevel: 5},
-                {id: 1045, name: "목공", maxLevel: 5},
-                {id: 1050, name: "약초학", maxLevel: 3},
-                {id: 1055, name: "치료술", maxLevel: 5},
-                {id: 1060, name: "응급처치", maxLevel: 3},
-                {id: 1065, name: "생존 본능", maxLevel: 5},
-                {id: 1070, name: "야영", maxLevel: 3}
+            "유용특성": [
+                {id: 135, name: "도약", maxLevel: 1},
+                {id: 136, name: "집중", maxLevel: 3},
+                {id: 137, name: "긴 도약", maxLevel: 3},
+                {id: 138, name: "회피", maxLevel: 3},
+                {id: 139, name: "집중 II", maxLevel: 3}
             ]
         };
-        
+
         let currentSkills = {};
-        let currentCategory = "화염 마법";
-        
-        // Initialize skills with 0 points
-        Object.keys(skillsData).forEach(category => {
-            skillsData[category].forEach(skill => {
-                currentSkills[skill.id] = 0;
+        let currentCategory = "화염마법";
+        let questCompleted = false;
+
+        // 모든 스킬을 0으로 초기화하는 함수
+        function initializeAllSkills() {
+            Object.keys(skillsData).forEach(category => {
+                skillsData[category].forEach(skill => {
+                    if (currentSkills[skill.id] === undefined) {
+                        currentSkills[skill.id] = 0;
+                    }
+                });
             });
-        });
-        
+        }
+
+        // Initialize skills with 0 points
+        initializeAllSkills();
+
         // Category color mapping
         const categoryColors = {
-            "화염 마법": "#ef4444",
-            "얼음 마법": "#3b82f6",
-            "번개 마법": "#eab308",
-            "초능력 마법": "#a855f7",
-            "융합 마법": "#f97316",
-            "힘 능력": "#10b981",
-            "민첩 능력": "#06b6d4",
-            "보조 능력": "#f0abfc",
-            "조화 능력": "#84cc16",
-            "용맹 특성": "#dc2626",
-            "강인 특성": "#78716c",
-            "고독 특성": "#1e40af",
-            "교활 특성": "#64748b",
-            "유용 특성": "#f59e0b"
+            "화염마법": "#ef4444",
+            "얼음마법": "#3b82f6",
+            "전기마법": "#eab308",
+            "초능력마법": "#a855f7",
+            "융합마법": "#f97316",
+            "힘능력": "#10b981",
+            "민첩능력": "#06b6d4",
+            "보조능력": "#f0abfc",
+            "조화능력": "#84cc16",
+            "용맹특성": "#dc2626",
+            "강인특성": "#78716c",
+            "고독특성": "#1e40af",
+            "교활특성": "#64748b",
+            "유용특성": "#f59e0b"
         };
-        
+
         // Category icons
         const categoryIcons = {
-            "화염 마법": "🔥",
-            "얼음 마법": "❄️",
-            "번개 마법": "⚡",
-            "초능력 마법": "🔮",
-            "융합 마법": "🌟",
-            "힘 능력": "💪",
-            "민첩 능력": "🏃",
-            "보조 능력": "🛡️",
-            "조화 능력": "☯️",
-            "용맹 특성": "⚔️",
-            "강인 특성": "🛡️",
-            "고독 특성": "🎯",
-            "교활 특성": "🗡️",
-            "유용 특성": "🔧"
+            "화염마법": "🔥",
+            "얼음마법": "❄️",
+            "전기마법": "⚡",
+            "초능력마법": "🔮",
+            "융합마법": "🌟",
+            "힘능력": "💪",
+            "민첩능력": "🏃",
+            "보조능력": "🛡️",
+            "조화능력": "☯️",
+            "용맹특성": "⚔️",
+            "강인특성": "🛡️",
+            "고독특성": "🎯",
+            "교활특성": "🗡️",
+            "유용특성": "🔧"
         };
-        
+
+        // 스킬 이미지 매핑 (스킬 ID → 이미지 번호, 1:1 매핑)
+        // skill_mapping.md 기반: Image# = Skill ID
+        function getSkillImagePath(skillId) {
+            if (skillId >= 1 && skillId <= 139) {
+                const numStr = String(skillId).padStart(3, '0');
+                // image002만 jpg, 나머지는 png
+                const ext = skillId === 2 ? 'jpg' : 'png';
+                return `images/image${numStr}.${ext}`;
+            }
+            return null;
+        }
+
         function initializeTabs() {
             const tabsContainer = document.getElementById('categoryTabs');
+            const selectContainer = document.getElementById('categorySelect');
             tabsContainer.innerHTML = '';
-            
+            selectContainer.innerHTML = '';
+
             Object.keys(skillsData).forEach(category => {
+                // PC용 탭
                 const tab = document.createElement('div');
                 tab.className = `tab ${category === currentCategory ? 'active' : ''}`;
                 tab.style.color = categoryColors[category];
@@ -909,13 +861,31 @@
                 `;
                 tab.onclick = () => switchCategory(category);
                 tabsContainer.appendChild(tab);
+
+                // 모바일용 셀렉트 옵션
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = `${categoryIcons[category]} ${category} (${skillsData[category].length})`;
+                option.selected = category === currentCategory;
+                selectContainer.appendChild(option);
             });
         }
-        
+
         function switchCategory(category) {
             currentCategory = category;
             initializeTabs();
             renderSkills();
+        }
+
+        function switchCategoryFromSelect() {
+            const select = document.getElementById('categorySelect');
+            switchCategory(select.value);
+        }
+
+        function toggleQuest() {
+            questCompleted = document.getElementById('questCheckbox').checked;
+            updateStats();
+            autoSave();
         }
         
         function renderSkills() {
@@ -931,11 +901,17 @@
                 const current = currentSkills[skill.id];
                 const cardClass = current === 0 ? 'unpurchased' : (current === skill.maxLevel ? 'max-level' : '');
                 const progress = (current / skill.maxLevel) * 100;
-                
+                const imagePath = getSkillImagePath(skill.id);
+
+                // 이미지가 있으면 이미지 표시, 없으면 기본 아이콘
+                const iconContent = imagePath
+                    ? `<img src="${imagePath}" alt="${skill.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${categoryIcons[currentCategory] || '?'}';">`
+                    : categoryIcons[currentCategory] || '?';
+
                 return `
                     <div class="skill-card ${cardClass}" onmouseenter="showTooltip(event, ${skill.id})" onmouseleave="hideTooltip()">
                         <div class="skill-icon" style="background: ${categoryColors[currentCategory]}33; border-color: ${categoryColors[currentCategory]};">
-                            Img ${skill.id}
+                            ${iconContent}
                         </div>
                         <div class="skill-name">${skill.name}</div>
                         <div class="skill-max-level">MAX Lv.${skill.maxLevel}</div>
@@ -958,16 +934,70 @@
             }).join('') + '</div>';
         }
         
+        // 스탯 합계 검증
+        function validateStats(strength, agility, intellect) {
+            const total = strength + agility + intellect;
+            const MAX_STAT_SUM = 60;
+
+            if (total > MAX_STAT_SUM) {
+                return {
+                    valid: false,
+                    message: `스탯 합계는 60을 초과할 수 없습니다. (현재: ${total})`
+                };
+            }
+
+            return { valid: true, remaining: MAX_STAT_SUM - total };
+        }
+
+        // 스킬 추가 시 스탯 초과 여부 미리 계산
+        function canIncreaseSkill(skillId) {
+            const category = getCategoryForSkillId(skillId);
+
+            // 현재 스탯 계산
+            let strength = 0, agility = 0, intellect = 0;
+            Object.keys(currentSkills).forEach(id => {
+                const points = currentSkills[id] || 0;
+                const cat = getCategoryForSkillId(parseInt(id));
+                if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(cat)) strength += points;
+                if (["민첩능력", "고독특성", "교활특성"].includes(cat)) agility += points;
+                if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(cat)) intellect += points;
+            });
+
+            // 추가할 스킬의 카테고리에 따라 스탯 증가 시뮬레이션
+            if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) strength++;
+            if (["민첩능력", "고독특성", "교활특성"].includes(category)) agility++;
+            if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) intellect++;
+
+            return validateStats(strength, agility, intellect);
+        }
+
         function increaseSkill(skillId) {
             const skill = findSkillById(skillId);
-            if (skill && currentSkills[skillId] < skill.maxLevel) {
-                currentSkills[skillId]++;
-                updateStats();
-                renderSkills();
-                autoSave();
+            if (!skill || currentSkills[skillId] >= skill.maxLevel) return;
+
+            // 스탯 제한 검증
+            const validation = canIncreaseSkill(skillId);
+            if (!validation.valid) {
+                alert(validation.message);
+                return;
             }
+
+            // 포인트 제한 검증
+            const totalPoints = Object.values(currentSkills).reduce((sum, val) => sum + (val || 0), 0);
+            const maxWithoutQuest = getPointsAtLevel(MAX_LEVEL, false);
+            const availablePoints = questCompleted ? getPointsAtLevel(MAX_LEVEL, true) : maxWithoutQuest;
+
+            if (totalPoints >= availablePoints) {
+                alert(`사용 가능한 포인트를 모두 사용했습니다. (최대: ${availablePoints})`);
+                return;
+            }
+
+            currentSkills[skillId]++;
+            updateStats();
+            renderSkills();
+            autoSave();
         }
-        
+
         function decreaseSkill(skillId) {
             if (currentSkills[skillId] > 0) {
                 currentSkills[skillId]--;
@@ -976,7 +1006,7 @@
                 autoSave();
             }
         }
-        
+
         function findSkillById(id) {
             for (const category in skillsData) {
                 const skill = skillsData[category].find(s => s.id === id);
@@ -984,7 +1014,7 @@
             }
             return null;
         }
-        
+
         function getCategoryForSkillId(id) {
             for (const category in skillsData) {
                 if (skillsData[category].find(s => s.id === id)) {
@@ -994,39 +1024,117 @@
             return "";
         }
         
+        // 포인트 시스템 상수
+        const MAX_LEVEL = 50;
+        const BASE_POINTS = 10;        // 레벨 1 시작 포인트
+        const POINTS_PER_LEVEL = 1;    // 레벨업당 추가 포인트
+        const QUEST_BONUS = 18;        // 퀘스트 완료 보너스
+        const STAT_LIMIT = 60;         // 힘 + 민첩 + 지력 합계 제한
+
+        // 특정 레벨까지의 누적 포인트 계산
+        function getPointsAtLevel(level, withQuest = false) {
+            // 레벨 1: 10, 레벨 2: 11, ..., 레벨 n: 10 + (n-1) = 9 + n
+            const points = BASE_POINTS + (level - 1) * POINTS_PER_LEVEL;
+            return withQuest ? points + QUEST_BONUS : points;
+        }
+
+        // 포인트로 필요 레벨 계산
+        function getRequiredLevel(points) {
+            if (points <= BASE_POINTS) return 1;
+            // points = 10 + (level - 1) → level = points - 9
+            const level = points - BASE_POINTS + 1;
+            return Math.min(level, MAX_LEVEL);
+        }
+
+        // 퀘스트 필요 여부 확인
+        function needsQuest(points) {
+            const maxWithoutQuest = getPointsAtLevel(MAX_LEVEL, false); // 59
+            return points > maxWithoutQuest;
+        }
+
         function updateStats() {
             const totalPoints = Object.values(currentSkills).reduce((sum, val) => sum + val, 0);
-            const requiredLevel = Math.max(1, Math.ceil(totalPoints / 3) + 1);
-            
+            const maxWithoutQuest = getPointsAtLevel(MAX_LEVEL, false); // 59
+            // 퀘스트 완료 여부에 따라 최대 포인트 결정
+            const availablePoints = questCompleted
+                ? getPointsAtLevel(MAX_LEVEL, true)  // 77
+                : maxWithoutQuest;                    // 59
+
+            // 필요 레벨 계산
+            let requiredLevel = getRequiredLevel(Math.min(totalPoints, maxWithoutQuest));
+            // 퀘스트 필요 여부: 퀘스트 미완료 상태에서 59 초과 시
+            const questRequired = !questCompleted && totalPoints > maxWithoutQuest;
+            // 포인트 초과 여부
+            const pointsExceeded = totalPoints > availablePoints;
+
             // Calculate stats based on categories
             let strength = 0;
             let agility = 0;
             let intellect = 0;
             let skillsLearned = 0;
-            
+
             Object.keys(currentSkills).forEach(skillId => {
                 const points = currentSkills[skillId];
                 if (points > 0) skillsLearned++;
-                
+
                 const category = getCategoryForSkillId(parseInt(skillId));
-                
-                if (["힘 능력", "용맹 특성", "강인 특성", "조화 능력"].includes(category)) {
+
+                if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) {
                     strength += points;
                 }
-                if (["민첩 능력", "고독 특성", "교활 특성"].includes(category)) {
+                if (["민첩능력", "고독특성", "교활특성"].includes(category)) {
                     agility += points;
                 }
-                if (["화염 마법", "얼음 마법", "번개 마법", "초능력 마법", "융합 마법", "보조 능력", "유용 특성"].includes(category)) {
+                if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) {
                     intellect += points;
                 }
             });
-            
+
+            // 스탯 합계 제한 체크
+            const totalStats = strength + agility + intellect;
+            const statLimitExceeded = totalStats > STAT_LIMIT;
+
+            // UI 업데이트
             document.getElementById('totalPoints').textContent = totalPoints;
-            document.getElementById('requiredLevel').textContent = requiredLevel;
+            document.getElementById('totalPoints').style.color = pointsExceeded ? '#ff4757' : '#667eea';
+
+            // 필요 레벨 표시
+            let levelText = requiredLevel.toString();
+            if (questRequired) {
+                levelText = `${requiredLevel} (퀘스트 필요!)`;
+            } else if (questCompleted && totalPoints > maxWithoutQuest) {
+                levelText = `${requiredLevel} + 퀘스트`;
+            }
+            document.getElementById('requiredLevel').textContent = levelText;
+            document.getElementById('requiredLevel').style.color =
+                (requiredLevel > MAX_LEVEL || pointsExceeded) ? '#ff4757' : '#667eea';
+
             document.getElementById('strengthStat').textContent = strength;
             document.getElementById('agilityStat').textContent = agility;
             document.getElementById('intellectStat').textContent = intellect;
-            document.getElementById('skillsLearned').textContent = `${skillsLearned} / 305`;
+            document.getElementById('skillsLearned').textContent = `${skillsLearned} / 139`;
+
+            // 스탯 제한 표시 업데이트
+            const statLimitEl = document.getElementById('statLimit');
+            if (statLimitEl) {
+                statLimitEl.textContent = `${totalStats} / ${STAT_LIMIT}`;
+                statLimitEl.style.color = statLimitExceeded ? '#ff4757' : '#667eea';
+            }
+
+            // 남은 포인트 표시
+            const remainingEl = document.getElementById('remainingPoints');
+            if (remainingEl) {
+                const remaining = availablePoints - totalPoints;
+                remainingEl.textContent = remaining >= 0 ? remaining : 0;
+                remainingEl.style.color = remaining < 0 ? '#ff4757' : '#667eea';
+            }
+
+            // 퀘스트 보너스 텍스트 업데이트
+            const questBonusText = document.getElementById('questBonusText');
+            if (questBonusText) {
+                questBonusText.textContent = questCompleted ? '(+18 포인트 적용됨)' : '(+18 포인트)';
+                questBonusText.style.color = questCompleted ? '#00ff88' : '#a0aec0';
+            }
         }
         
         function filterSkills() {
@@ -1034,35 +1142,57 @@
         }
         
         function saveProgress() {
-            localStorage.setItem('skillSimulatorData', JSON.stringify(currentSkills));
-            alert('진행 상황이 저장되었습니다! ✅');
+            const saveData = {
+                skills: currentSkills,
+                questCompleted: questCompleted
+            };
+            localStorage.setItem('skillSimulatorData', JSON.stringify(saveData));
+            alert('진행 상황이 저장되었습니다!');
         }
-        
+
         function autoSave() {
-            localStorage.setItem('skillSimulatorData', JSON.stringify(currentSkills));
+            const saveData = {
+                skills: currentSkills,
+                questCompleted: questCompleted
+            };
+            localStorage.setItem('skillSimulatorData', JSON.stringify(saveData));
         }
         
         function loadProgress() {
             const saved = localStorage.getItem('skillSimulatorData');
             if (saved) {
-                currentSkills = JSON.parse(saved);
+                const data = JSON.parse(saved);
+                // 새 형식 (객체) 또는 이전 형식 (스킬만) 지원
+                if (data.skills) {
+                    currentSkills = data.skills;
+                    questCompleted = data.questCompleted || false;
+                } else {
+                    currentSkills = data;
+                    questCompleted = false;
+                }
+                // 누락된 스킬 ID를 0으로 초기화
+                initializeAllSkills();
+                // 퀘스트 체크박스 상태 동기화
+                document.getElementById('questCheckbox').checked = questCompleted;
                 updateStats();
                 renderSkills();
-                alert('저장된 데이터를 불러왔습니다! 📥');
+                alert('저장된 데이터를 불러왔습니다!');
             } else {
                 alert('저장된 데이터가 없습니다.');
             }
         }
-        
+
         function resetAll() {
-            if (confirm('모든 스킬 포인트를 초기화하시겠습니까? 🔄')) {
-                Object.keys(currentSkills).forEach(key => {
-                    currentSkills[key] = 0;
-                });
+            if (confirm('모든 스킬 포인트를 초기화하시겠습니까?')) {
+                // 모든 스킬을 0으로 초기화
+                currentSkills = {};
+                initializeAllSkills();
+                questCompleted = false;
+                document.getElementById('questCheckbox').checked = false;
                 updateStats();
                 renderSkills();
                 autoSave();
-                alert('초기화 완료! ✨');
+                alert('초기화 완료!');
             }
         }
         
@@ -1116,9 +1246,22 @@
             // Load saved data if exists
             const saved = localStorage.getItem('skillSimulatorData');
             if (saved) {
-                currentSkills = JSON.parse(saved);
+                const data = JSON.parse(saved);
+                // 새 형식 (객체) 또는 이전 형식 (스킬만) 지원
+                if (data.skills) {
+                    currentSkills = data.skills;
+                    questCompleted = data.questCompleted || false;
+                } else {
+                    currentSkills = data;
+                    questCompleted = false;
+                }
+                // 퀘스트 체크박스 상태 동기화
+                document.getElementById('questCheckbox').checked = questCompleted;
             }
-            
+
+            // 누락된 스킬 ID를 0으로 초기화
+            initializeAllSkills();
+
             initializeTabs();
             renderSkills();
             updateStats();

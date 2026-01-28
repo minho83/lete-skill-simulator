@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스킬 시뮬레이터 - 이미지 맵핑 도구</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00d4ff;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #00d4ff;
+            color: #1a1a2e;
+        }
+
+        .btn-secondary {
+            background: #4a4a6a;
+            color: #fff;
+        }
+
+        .btn-success {
+            background: #00ff88;
+            color: #1a1a2e;
+        }
+
+        .btn-danger {
+            background: #ff4757;
+            color: #fff;
+        }
+
+        .toolbar button:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #16213e;
+            border-radius: 10px;
+        }
+
+        .skill-slot {
+            width: 70px;
+            height: 70px;
+            border: 2px dashed #4a4a6a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            background: #0f0f23;
+        }
+
+        .skill-slot:hover {
+            border-color: #00d4ff;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .skill-slot.mapped {
+            border: 2px solid #00ff88;
+        }
+
+        .skill-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .skill-slot .slot-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            color: #666;
+            background: rgba(0,0,0,0.5);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .skill-slot .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .skill-slot.mapped:hover .remove-btn {
+            display: block;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            background: #16213e;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #00d4ff;
+        }
+
+        .close-btn {
+            background: #ff4757;
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
+        }
+
+        .image-option {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #4a4a6a;
+            border-radius: 5px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .image-option:hover {
+            border-color: #00d4ff;
+            transform: scale(1.1);
+        }
+
+        .image-option.used {
+            opacity: 0.3;
+            border-color: #ff4757;
+        }
+
+        .image-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .image-option .img-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            font-size: 8px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            text-align: center;
+            padding: 1px;
+        }
+
+        /* JSON Output */
+        .json-output {
+            background: #0f0f23;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .json-output pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 12px;
+            color: #00ff88;
+        }
+
+        .stats {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #888;
+        }
+
+        .filter-bar {
+            margin-bottom: 15px;
+        }
+
+        .filter-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4a4a6a;
+            border-radius: 5px;
+            background: #0f0f23;
+            color: #fff;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>스킬 시뮬레이터 - 이미지 맵핑 도구</h1>
+
+    <div class="stats">
+        맵핑 완료: <span id="mappedCount">0</span> / <span id="totalSlots">139</span>
+    </div>
+
+    <div class="toolbar">
+        <button class="btn-primary" onclick="exportMapping()">맵핑 데이터 내보내기 (JSON)</button>
+        <button class="btn-secondary" onclick="importMapping()">맵핑 데이터 불러오기</button>
+        <button class="btn-success" onclick="saveToLocalStorage()">로컬 저장</button>
+        <button class="btn-secondary" onclick="loadFromLocalStorage()">로컬 불러오기</button>
+        <button class="btn-danger" onclick="clearAllMappings()">전체 초기화</button>
+    </div>
+
+    <div class="skill-grid" id="skillGrid">
+        <!-- 139개의 스킬 슬롯이 여기에 생성됩니다 -->
+    </div>
+
+    <div class="json-output" id="jsonOutput" style="display: none;">
+        <h3>맵핑 데이터 (JSON)</h3>
+        <pre id="jsonContent"></pre>
+    </div>
+
+    <!-- 이미지 선택 모달 -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>슬롯 #<span id="currentSlot"></span> - 이미지 선택</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="filter-bar">
+                <input type="text" id="imageFilter" placeholder="이미지 이름으로 검색..." oninput="filterImages()">
+            </div>
+            <div class="image-grid" id="imageGrid">
+                <!-- 이미지 옵션들이 여기에 생성됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
+
+    <script>
+        const TOTAL_SLOTS = 139;
+        let mappings = {}; // { slotId: imageName }
+        let availableImages = [];
+        let currentEditingSlot = null;
+
+        // 이미지 목록 로드
+        async function loadImageList() {
+            // images 폴더의 이미지 목록 (image001.png ~ image280.png)
+            availableImages = [];
+            for (let i = 1; i <= 280; i++) {
+                const num = String(i).padStart(3, '0');
+                // jpg는 image002만 있음
+                if (i === 2) {
+                    availableImages.push(`image${num}.jpg`);
+                } else {
+                    availableImages.push(`image${num}.png`);
+                }
+            }
+        }
+
+        // 스킬 슬롯 생성
+        function createSkillSlots() {
+            const grid = document.getElementById('skillGrid');
+            grid.innerHTML = '';
+
+            for (let i = 1; i <= TOTAL_SLOTS; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'skill-slot';
+                slot.dataset.slot = i;
+                slot.onclick = () => openImageSelector(i);
+
+                const slotNumber = document.createElement('span');
+                slotNumber.className = 'slot-number';
+                slotNumber.textContent = i;
+                slot.appendChild(slotNumber);
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.textContent = '×';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removeMapping(i);
+                };
+                slot.appendChild(removeBtn);
+
+                if (mappings[i]) {
+                    const img = document.createElement('img');
+                    img.src = `images/${mappings[i]}`;
+                    img.alt = `Skill ${i}`;
+                    img.onerror = () => { img.style.display = 'none'; };
+                    slot.appendChild(img);
+                    slot.classList.add('mapped');
+                }
+
+                grid.appendChild(slot);
+            }
+
+            updateStats();
+        }
+
+        // 이미지 선택 모달 열기
+        function openImageSelector(slotId) {
+            currentEditingSlot = slotId;
+            document.getElementById('currentSlot').textContent = slotId;
+            renderImageOptions();
+            document.getElementById('imageModal').classList.add('active');
+            document.getElementById('imageFilter').value = '';
+        }
+
+        // 이미지 옵션 렌더링
+        function renderImageOptions(filter = '') {
+            const grid = document.getElementById('imageGrid');
+            grid.innerHTML = '';
+
+            const usedImages = Object.values(mappings);
+            const filterLower = filter.toLowerCase();
+
+            availableImages.forEach(imgName => {
+                if (filterLower && !imgName.toLowerCase().includes(filterLower)) {
+                    return;
+                }
+
+                const option = document.createElement('div');
+                option.className = 'image-option';
+                if (usedImages.includes(imgName) && mappings[currentEditingSlot] !== imgName) {
+                    option.classList.add('used');
+                }
+
+                const img = document.createElement('img');
+                img.src = `images/${imgName}`;
+                img.alt = imgName;
+                img.onerror = () => { option.style.display = 'none'; };
+                option.appendChild(img);
+
+                const nameLabel = document.createElement('span');
+                nameLabel.className = 'img-name';
+                nameLabel.textContent = imgName.replace('image', '').replace('.png', '').replace('.jpg', '');
+                option.appendChild(nameLabel);
+
+                option.onclick = () => selectImage(imgName);
+                grid.appendChild(option);
+            });
+        }
+
+        // 이미지 필터링
+        function filterImages() {
+            const filter = document.getElementById('imageFilter').value;
+            renderImageOptions(filter);
+        }
+
+        // 이미지 선택
+        function selectImage(imgName) {
+            mappings[currentEditingSlot] = imgName;
+            closeModal();
+            createSkillSlots();
+        }
+
+        // 맵핑 제거
+        function removeMapping(slotId) {
+            delete mappings[slotId];
+            createSkillSlots();
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+            currentEditingSlot = null;
+        }
+
+        // 통계 업데이트
+        function updateStats() {
+            const mappedCount = Object.keys(mappings).length;
+            document.getElementById('mappedCount').textContent = mappedCount;
+        }
+
+        // 맵핑 데이터 내보내기
+        function exportMapping() {
+            const data = {
+                version: "1.0",
+                totalSlots: TOTAL_SLOTS,
+                mappings: mappings,
+                skills: Object.entries(mappings).map(([slot, image]) => ({
+                    id: parseInt(slot),
+                    image: image,
+                    name: `스킬 ${slot}` // 사용자가 나중에 수정 가능
+                }))
+            };
+
+            const jsonStr = JSON.stringify(data, null, 2);
+
+            // JSON 표시
+            document.getElementById('jsonOutput').style.display = 'block';
+            document.getElementById('jsonContent').textContent = jsonStr;
+
+            // 파일 다운로드
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'skill-mappings.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // 맵핑 데이터 불러오기
+        function importMapping() {
+            document.getElementById('fileInput').click();
+        }
+
+        // 파일 import 처리
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.mappings) {
+                        mappings = data.mappings;
+                        createSkillSlots();
+                        alert('맵핑 데이터를 불러왔습니다!');
+                    }
+                } catch (err) {
+                    alert('JSON 파일을 파싱할 수 없습니다.');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // 로컬 스토리지에 저장
+        function saveToLocalStorage() {
+            localStorage.setItem('skillMappings', JSON.stringify(mappings));
+            alert('로컬 스토리지에 저장되었습니다!');
+        }
+
+        // 로컬 스토리지에서 불러오기
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('skillMappings');
+            if (saved) {
+                mappings = JSON.parse(saved);
+                createSkillSlots();
+                alert('로컬 스토리지에서 불러왔습니다!');
+            } else {
+                alert('저장된 데이터가 없습니다.');
+            }
+        }
+
+        // 전체 초기화
+        function clearAllMappings() {
+            if (confirm('모든 맵핑을 초기화하시겠습니까?')) {
+                mappings = {};
+                createSkillSlots();
+            }
+        }
+
+        // 초기화
+        loadImageList();
+        loadFromLocalStorage(); // 자동으로 이전 작업 불러오기 시도
+        if (Object.keys(mappings).length === 0) {
+            createSkillSlots();
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

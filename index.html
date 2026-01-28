@@ -134,10 +134,10 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         }
 
-        /* PC: 2열 그리드 */
+        /* PC: 7열 그리드 */
         .tabs {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(7, 1fr);
             gap: 8px;
         }
 
@@ -532,19 +532,43 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">힘 (Strength)</div>
-                    <div class="stat-value" id="strengthStat">0</div>
+                    <div class="stat-value" id="strengthStat">1</div>
+                    <div class="stat-controls" style="display: flex; gap: 5px; justify-content: center; margin-top: 8px;">
+                        <button class="skill-btn" onclick="adjustAllocatedStat('strength', -1)" style="width: 28px; height: 28px; font-size: 0.8rem;">-</button>
+                        <button class="skill-btn" onclick="adjustAllocatedStat('strength', 1)" style="width: 28px; height: 28px; font-size: 0.8rem;">+</button>
+                    </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">민첩 (Agility)</div>
-                    <div class="stat-value" id="agilityStat">0</div>
+                    <div class="stat-value" id="agilityStat">1</div>
+                    <div class="stat-controls" style="display: flex; gap: 5px; justify-content: center; margin-top: 8px;">
+                        <button class="skill-btn" onclick="adjustAllocatedStat('agility', -1)" style="width: 28px; height: 28px; font-size: 0.8rem;">-</button>
+                        <button class="skill-btn" onclick="adjustAllocatedStat('agility', 1)" style="width: 28px; height: 28px; font-size: 0.8rem;">+</button>
+                    </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">지력 (Intellect)</div>
-                    <div class="stat-value" id="intellectStat">0</div>
+                    <div class="stat-value" id="intellectStat">1</div>
+                    <div class="stat-controls" style="display: flex; gap: 5px; justify-content: center; margin-top: 8px;">
+                        <button class="skill-btn" onclick="adjustAllocatedStat('intellect', -1)" style="width: 28px; height: 28px; font-size: 0.8rem;">-</button>
+                        <button class="skill-btn" onclick="adjustAllocatedStat('intellect', 1)" style="width: 28px; height: 28px; font-size: 0.8rem;">+</button>
+                    </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">스탯 합계 (제한: 60)</div>
-                    <div class="stat-value" id="statLimit">0 / 60</div>
+                    <div class="stat-label">스탯 합계 (제한: 62)</div>
+                    <div class="stat-value" id="statLimit">3 / 62</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">선택 포인트</div>
+                    <div class="stat-value" id="allocatedPoints">0 / 10</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">럭 (Luck)</div>
+                    <div class="stat-value" id="luckStat">0</div>
+                    <div class="stat-controls" style="display: flex; gap: 5px; justify-content: center; margin-top: 8px;">
+                        <button class="skill-btn" onclick="adjustLuck(-1)" style="width: 28px; height: 28px; font-size: 0.8rem;">-</button>
+                        <button class="skill-btn" onclick="adjustLuck(1)" style="width: 28px; height: 28px; font-size: 0.8rem;">+</button>
+                    </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">스킬 습득</div>
@@ -781,6 +805,23 @@
         let currentSkills = {};
         let currentCategory = "화염마법";
         let questCompleted = false;
+        
+        // 기본 스탯: 힘 1, 민첩 1, 지력 1
+        let baseStats = {
+            strength: 1,
+            agility: 1,
+            intellect: 1
+        };
+        
+        // 선택 포인트: 10개를 힘/민첩/지력에 분배
+        let allocatedStats = {
+            strength: 0,
+            agility: 0,
+            intellect: 0
+        };
+        
+        // 럭 스탯 (별도 보조 스탯, 합계 미포함)
+        let luckStat = 0;
 
         // 모든 스킬을 0으로 초기화하는 함수
         function initializeAllSkills() {
@@ -937,36 +978,95 @@
         // 스탯 합계 검증
         function validateStats(strength, agility, intellect) {
             const total = strength + agility + intellect;
-            const MAX_STAT_SUM = 60;
 
-            if (total > MAX_STAT_SUM) {
+            if (total > STAT_LIMIT) {
                 return {
                     valid: false,
-                    message: `스탯 합계는 60을 초과할 수 없습니다. (현재: ${total})`
+                    message: `스탯 합계는 ${STAT_LIMIT}을 초과할 수 없습니다. (현재: ${total})`
                 };
             }
 
-            return { valid: true, remaining: MAX_STAT_SUM - total };
+            return { valid: true, remaining: STAT_LIMIT - total };
+        }
+        
+        // 선택 포인트 조정 함수 (힘/민첩/지력에 분배)
+        function adjustAllocatedStat(statType, delta) {
+            const totalAllocated = allocatedStats.strength + allocatedStats.agility + allocatedStats.intellect;
+            
+            if (delta > 0 && totalAllocated >= ALLOCATABLE_POINTS) {
+                alert(`선택 포인트는 최대 ${ALLOCATABLE_POINTS}개까지 사용할 수 있습니다.`);
+                return;
+            }
+            
+            if (delta < 0 && allocatedStats[statType] <= 0) {
+                return;
+            }
+            
+            allocatedStats[statType] += delta;
+            
+            // 스탯 합계 제한 체크
+            const skillStrength = Object.keys(currentSkills).reduce((sum, id) => {
+                const cat = getCategoryForSkillId(parseInt(id));
+                return sum + (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(cat) ? (currentSkills[id] || 0) : 0);
+            }, 0);
+            const skillAgility = Object.keys(currentSkills).reduce((sum, id) => {
+                const cat = getCategoryForSkillId(parseInt(id));
+                return sum + (["민첩능력", "고독특성", "교활특성"].includes(cat) ? (currentSkills[id] || 0) : 0);
+            }, 0);
+            const skillIntellect = Object.keys(currentSkills).reduce((sum, id) => {
+                const cat = getCategoryForSkillId(parseInt(id));
+                return sum + (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(cat) ? (currentSkills[id] || 0) : 0);
+            }, 0);
+            
+            const totalStrength = baseStats.strength + allocatedStats.strength + skillStrength;
+            const totalAgility = baseStats.agility + allocatedStats.agility + skillAgility;
+            const totalIntellect = baseStats.intellect + allocatedStats.intellect + skillIntellect;
+            const totalStats = totalStrength + totalAgility + totalIntellect;
+            
+            if (totalStats > STAT_LIMIT) {
+                // 제한 초과 시 되돌리기
+                allocatedStats[statType] -= delta;
+                alert(`스탯 합계는 ${STAT_LIMIT}을 초과할 수 없습니다. (현재: ${totalStats})`);
+                return;
+            }
+            
+            updateStats();
+            autoSave();
+        }
+        
+        // 럭 스탯 조정 함수
+        function adjustLuck(delta) {
+            const newValue = luckStat + delta;
+            if (newValue >= 0) {
+                luckStat = newValue;
+                updateStats();
+                autoSave();
+            }
         }
 
         // 스킬 추가 시 스탯 초과 여부 미리 계산
         function canIncreaseSkill(skillId) {
             const category = getCategoryForSkillId(skillId);
 
-            // 현재 스탯 계산
-            let strength = 0, agility = 0, intellect = 0;
+            // 현재 스킬 스탯 계산
+            let skillStrength = 0, skillAgility = 0, skillIntellect = 0;
             Object.keys(currentSkills).forEach(id => {
                 const points = currentSkills[id] || 0;
                 const cat = getCategoryForSkillId(parseInt(id));
-                if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(cat)) strength += points;
-                if (["민첩능력", "고독특성", "교활특성"].includes(cat)) agility += points;
-                if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(cat)) intellect += points;
+                if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(cat)) skillStrength += points;
+                if (["민첩능력", "고독특성", "교활특성"].includes(cat)) skillAgility += points;
+                if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(cat)) skillIntellect += points;
             });
 
             // 추가할 스킬의 카테고리에 따라 스탯 증가 시뮬레이션
-            if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) strength++;
-            if (["민첩능력", "고독특성", "교활특성"].includes(category)) agility++;
-            if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) intellect++;
+            if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) skillStrength++;
+            if (["민첩능력", "고독특성", "교활특성"].includes(category)) skillAgility++;
+            if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) skillIntellect++;
+
+            // 최종 스탯 = 기본 스탯 + 선택 포인트 + 스킬 스탯
+            const strength = baseStats.strength + allocatedStats.strength + skillStrength;
+            const agility = baseStats.agility + allocatedStats.agility + skillAgility;
+            const intellect = baseStats.intellect + allocatedStats.intellect + skillIntellect;
 
             return validateStats(strength, agility, intellect);
         }
@@ -1029,7 +1129,9 @@
         const BASE_POINTS = 10;        // 레벨 1 시작 포인트
         const POINTS_PER_LEVEL = 1;    // 레벨업당 추가 포인트
         const QUEST_BONUS = 18;        // 퀘스트 완료 보너스
-        const STAT_LIMIT = 60;         // 힘 + 민첩 + 지력 합계 제한
+        const STAT_LIMIT = 62;         // 힘 + 민첩 + 지력 합계 제한 (3 기본 + 10 선택 + 49)
+        const BASE_STAT_SUM = 3;       // 기본 스탯 합계 (힘 1 + 민첩 1 + 지력 1)
+        const ALLOCATABLE_POINTS = 10;  // 선택 포인트
 
         // 특정 레벨까지의 누적 포인트 계산
         function getPointsAtLevel(level, withQuest = false) {
@@ -1067,10 +1169,10 @@
             // 포인트 초과 여부
             const pointsExceeded = totalPoints > availablePoints;
 
-            // Calculate stats based on categories
-            let strength = 0;
-            let agility = 0;
-            let intellect = 0;
+            // Calculate stats based on categories (스킬로부터 얻는 스탯)
+            let skillStrength = 0;
+            let skillAgility = 0;
+            let skillIntellect = 0;
             let skillsLearned = 0;
 
             Object.keys(currentSkills).forEach(skillId => {
@@ -1080,15 +1182,20 @@
                 const category = getCategoryForSkillId(parseInt(skillId));
 
                 if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) {
-                    strength += points;
+                    skillStrength += points;
                 }
                 if (["민첩능력", "고독특성", "교활특성"].includes(category)) {
-                    agility += points;
+                    skillAgility += points;
                 }
                 if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) {
-                    intellect += points;
+                    skillIntellect += points;
                 }
             });
+
+            // 최종 스탯 = 기본 스탯 + 선택 포인트 + 스킬 스탯
+            const strength = baseStats.strength + allocatedStats.strength + skillStrength;
+            const agility = baseStats.agility + allocatedStats.agility + skillAgility;
+            const intellect = baseStats.intellect + allocatedStats.intellect + skillIntellect;
 
             // 스탯 합계 제한 체크
             const totalStats = strength + agility + intellect;
@@ -1113,12 +1220,23 @@
             document.getElementById('agilityStat').textContent = agility;
             document.getElementById('intellectStat').textContent = intellect;
             document.getElementById('skillsLearned').textContent = `${skillsLearned} / 139`;
+            
+            // 럭 스탯 표시
+            document.getElementById('luckStat').textContent = luckStat;
 
             // 스탯 제한 표시 업데이트
             const statLimitEl = document.getElementById('statLimit');
             if (statLimitEl) {
                 statLimitEl.textContent = `${totalStats} / ${STAT_LIMIT}`;
                 statLimitEl.style.color = statLimitExceeded ? '#ff4757' : '#667eea';
+            }
+            
+            // 선택 포인트 표시 업데이트
+            const totalAllocated = allocatedStats.strength + allocatedStats.agility + allocatedStats.intellect;
+            const allocatedPointsEl = document.getElementById('allocatedPoints');
+            if (allocatedPointsEl) {
+                allocatedPointsEl.textContent = `${totalAllocated} / ${ALLOCATABLE_POINTS}`;
+                allocatedPointsEl.style.color = totalAllocated > ALLOCATABLE_POINTS ? '#ff4757' : '#667eea';
             }
 
             // 남은 포인트 표시
@@ -1144,7 +1262,10 @@
         function saveProgress() {
             const saveData = {
                 skills: currentSkills,
-                questCompleted: questCompleted
+                questCompleted: questCompleted,
+                baseStats: baseStats,
+                allocatedStats: allocatedStats,
+                luckStat: luckStat
             };
             localStorage.setItem('skillSimulatorData', JSON.stringify(saveData));
             alert('진행 상황이 저장되었습니다!');
@@ -1153,7 +1274,10 @@
         function autoSave() {
             const saveData = {
                 skills: currentSkills,
-                questCompleted: questCompleted
+                questCompleted: questCompleted,
+                baseStats: baseStats,
+                allocatedStats: allocatedStats,
+                luckStat: luckStat
             };
             localStorage.setItem('skillSimulatorData', JSON.stringify(saveData));
         }
@@ -1166,9 +1290,15 @@
                 if (data.skills) {
                     currentSkills = data.skills;
                     questCompleted = data.questCompleted || false;
+                    baseStats = data.baseStats || { strength: 1, agility: 1, intellect: 1 };
+                    allocatedStats = data.allocatedStats || { strength: 0, agility: 0, intellect: 0 };
+                    luckStat = data.luckStat || 0;
                 } else {
                     currentSkills = data;
                     questCompleted = false;
+                    baseStats = { strength: 1, agility: 1, intellect: 1 };
+                    allocatedStats = { strength: 0, agility: 0, intellect: 0 };
+                    luckStat = 0;
                 }
                 // 누락된 스킬 ID를 0으로 초기화
                 initializeAllSkills();
@@ -1188,6 +1318,9 @@
                 currentSkills = {};
                 initializeAllSkills();
                 questCompleted = false;
+                baseStats = { strength: 1, agility: 1, intellect: 1 };
+                allocatedStats = { strength: 0, agility: 0, intellect: 0 };
+                luckStat = 0;
                 document.getElementById('questCheckbox').checked = false;
                 updateStats();
                 renderSkills();
@@ -1251,9 +1384,15 @@
                 if (data.skills) {
                     currentSkills = data.skills;
                     questCompleted = data.questCompleted || false;
+                    baseStats = data.baseStats || { strength: 1, agility: 1, intellect: 1 };
+                    allocatedStats = data.allocatedStats || { strength: 0, agility: 0, intellect: 0 };
+                    luckStat = data.luckStat || 0;
                 } else {
                     currentSkills = data;
                     questCompleted = false;
+                    baseStats = { strength: 1, agility: 1, intellect: 1 };
+                    allocatedStats = { strength: 0, agility: 0, intellect: 0 };
+                    luckStat = 0;
                 }
                 // 퀘스트 체크박스 상태 동기화
                 document.getElementById('questCheckbox').checked = questCompleted;

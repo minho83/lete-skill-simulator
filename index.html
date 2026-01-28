@@ -925,6 +925,9 @@
 
         function toggleQuest() {
             questCompleted = document.getElementById('questCheckbox').checked;
+            if (skillSimulator) {
+                skillSimulator.questCompleted = questCompleted;
+            }
             updateStats();
             autoSave();
         }
@@ -1046,48 +1049,44 @@
 
         // 스킬 추가 시 스탯 초과 여부 미리 계산
         function canIncreaseSkill(skillId) {
-            const category = getCategoryForSkillId(skillId);
-
-            // 현재 스킬 스탯 계산
-            let skillStrength = 0, skillAgility = 0, skillIntellect = 0;
-            Object.keys(currentSkills).forEach(id => {
-                const points = currentSkills[id] || 0;
-                const cat = getCategoryForSkillId(parseInt(id));
-                if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(cat)) skillStrength += points;
-                if (["민첩능력", "고독특성", "교활특성"].includes(cat)) skillAgility += points;
-                if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(cat)) skillIntellect += points;
-            });
-
-            // 추가할 스킬의 카테고리에 따라 스탯 증가 시뮬레이션
-            if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) skillStrength++;
-            if (["민첩능력", "고독특성", "교활특성"].includes(category)) skillAgility++;
-            if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) skillIntellect++;
-
-            // 최종 스탯 = 기본 스탯 + 선택 포인트 + 스킬 스탯
-            const strength = baseStats.strength + allocatedStats.strength + skillStrength;
-            const agility = baseStats.agility + allocatedStats.agility + skillAgility;
-            const intellect = baseStats.intellect + allocatedStats.intellect + skillIntellect;
-
-            return validateStats(strength, agility, intellect);
+            // 임시로 스킬 포인트 증가 시뮬레이션
+            const tempSkills = { ...currentSkills };
+            tempSkills[skillId] = (tempSkills[skillId] || 0) + 1;
+            
+            // 시뮬레이터로 검증
+            const tempSkillsArray = convertSkillsToArray(tempSkills);
+            const tempSimulator = new SkillSimulator(tempSkillsArray);
+            tempSimulator.level = skillSimulator ? skillSimulator.level : 1;
+            tempSimulator.questCompleted = questCompleted;
+            
+            const validation = tempSimulator.validateStats();
+            
+            return {
+                valid: validation.valid,
+                message: validation.valid 
+                    ? null 
+                    : `스탯 합계는 ${STAT_LIMIT}을 초과할 수 없습니다. (현재: ${validation.total})`
+            };
         }
 
         function increaseSkill(skillId) {
             const skill = findSkillById(skillId);
             if (!skill || currentSkills[skillId] >= skill.maxLevel) return;
 
-            // 스탯 제한 검증
+            // 스탯 제한 검증 (시뮬레이터 사용)
+            updateSimulator();
             const validation = canIncreaseSkill(skillId);
             if (!validation.valid) {
                 alert(validation.message);
                 return;
             }
 
-            // 포인트 제한 검증
-            const totalPoints = Object.values(currentSkills).reduce((sum, val) => sum + (val || 0), 0);
-            const maxWithoutQuest = getPointsAtLevel(MAX_LEVEL, false);
-            const availablePoints = questCompleted ? getPointsAtLevel(MAX_LEVEL, true) : maxWithoutQuest;
+            // 포인트 제한 검증 (시뮬레이터 사용)
+            const status = skillSimulator.getStatus();
+            const availablePoints = status.availablePoints;
+            const usedPoints = status.usedPoints;
 
-            if (totalPoints >= availablePoints) {
+            if (usedPoints >= availablePoints) {
                 alert(`사용 가능한 포인트를 모두 사용했습니다. (최대: ${availablePoints})`);
                 return;
             }
@@ -1133,6 +1132,121 @@
         const BASE_STAT_SUM = 3;       // 기본 스탯 합계 (힘 1 + 민첩 1 + 지력 1)
         const ALLOCATABLE_POINTS = 10;  // 선택 포인트
 
+        // 스킬 객체를 배열로 변환하는 헬퍼 함수
+        function convertSkillsToArray(skillsObj) {
+            return Object.keys(skillsObj).map(id => ({
+                id: parseInt(id),
+                currentPoints: skillsObj[id] || 0
+            }));
+        }
+
+        // 스탯 계산 함수 (카테고리별로 분류)
+        function calculateStats(skillsArray) {
+            let strength = 0;
+            let agility = 0;
+            let intelligence = 0;
+
+            skillsArray.forEach(skill => {
+                if (skill.currentPoints === 0) return;
+                
+                const category = getCategoryForSkillId(skill.id);
+                const points = skill.currentPoints;
+
+                if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) {
+                    strength += points;
+                }
+                if (["민첩능력", "고독특성", "교활특성"].includes(category)) {
+                    agility += points;
+                }
+                if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) {
+                    intelligence += points;
+                }
+            });
+
+            return {
+                strength: baseStats.strength + allocatedStats.strength + strength,
+                agility: baseStats.agility + allocatedStats.agility + agility,
+                intelligence: baseStats.intellect + allocatedStats.intellect + intelligence,
+                luck: luckStat
+            };
+        }
+
+        // SkillSimulator 클래스
+        class SkillSimulator {
+            constructor(skills) {
+                // skills는 배열 형태 [{id, currentPoints}, ...]
+                this.skills = skills || [];
+                this.level = 1;
+                this.questCompleted = false;
+            }
+            
+            // 1. 사용 가능한 총 포인트 계산
+            getAvailablePoints() {
+                let points = 10; // 레벨 1 시작
+                points += (this.level - 1); // 레벨업 보너스
+                if (this.questCompleted) {
+                    points += 18; // 퀘스트 보너스
+                }
+                return points;
+            }
+            
+            // 2. 사용한 총 포인트 계산
+            getUsedPoints() {
+                return this.skills.reduce((total, skill) => total + (skill.currentPoints || 0), 0);
+            }
+            
+            // 3. 필요 레벨 계산 (Math.ceil(usedPoints / 3) + 1)
+            getRequiredLevel() {
+                const usedPoints = this.getUsedPoints();
+                return Math.ceil(usedPoints / 3) + 1;
+            }
+            
+            // 4. 스탯 계산
+            getStats() {
+                return calculateStats(this.skills);
+            }
+            
+            // 5. 스탯 제한 검증 (힘+민첩+지력 = 62)
+            validateStats() {
+                const stats = this.getStats();
+                const total = stats.strength + stats.agility + stats.intelligence;
+                return {
+                    valid: total <= STAT_LIMIT,
+                    total: total,
+                    remaining: STAT_LIMIT - total
+                };
+            }
+            
+            // 6. 전체 상태 가져오기
+            getStatus() {
+                const stats = this.getStats();
+                const validation = this.validateStats();
+                
+                return {
+                    level: this.level,
+                    availablePoints: this.getAvailablePoints(),
+                    usedPoints: this.getUsedPoints(),
+                    remainingPoints: this.getAvailablePoints() - this.getUsedPoints(),
+                    requiredLevel: this.getRequiredLevel(),
+                    stats: stats,
+                    statsValid: validation.valid,
+                    statTotal: validation.total,
+                    statRemaining: validation.remaining
+                };
+            }
+        }
+
+        // 전역 시뮬레이터 인스턴스
+        let skillSimulator = null;
+
+        // 시뮬레이터 인스턴스 초기화/업데이트
+        function updateSimulator() {
+            const skillsArray = convertSkillsToArray(currentSkills);
+            skillSimulator = new SkillSimulator(skillsArray);
+            skillSimulator.level = 1; // 필요시 레벨 설정
+            skillSimulator.questCompleted = questCompleted;
+        }
+
         // 특정 레벨까지의 누적 포인트 계산
         function getPointsAtLevel(level, withQuest = false) {
             // 레벨 1: 10, 레벨 2: 11, ..., 레벨 n: 10 + (n-1) = 9 + n
@@ -1140,7 +1254,7 @@
             return withQuest ? points + QUEST_BONUS : points;
         }
 
-        // 포인트로 필요 레벨 계산
+        // 포인트로 필요 레벨 계산 (기존 로직 유지 - UI용)
         function getRequiredLevel(points) {
             if (points <= BASE_POINTS) return 1;
             // points = 10 + (level - 1) → level = points - 9
@@ -1155,57 +1269,44 @@
         }
 
         function updateStats() {
-            const totalPoints = Object.values(currentSkills).reduce((sum, val) => sum + val, 0);
+            // 시뮬레이터 업데이트
+            updateSimulator();
+            
+            // 시뮬레이터를 통해 상태 가져오기
+            const status = skillSimulator.getStatus();
+            const stats = status.stats;
+            
+            const totalPoints = status.usedPoints;
             const maxWithoutQuest = getPointsAtLevel(MAX_LEVEL, false); // 59
             // 퀘스트 완료 여부에 따라 최대 포인트 결정
             const availablePoints = questCompleted
                 ? getPointsAtLevel(MAX_LEVEL, true)  // 77
                 : maxWithoutQuest;                    // 59
 
-            // 필요 레벨 계산
-            let requiredLevel = getRequiredLevel(Math.min(totalPoints, maxWithoutQuest));
+            // 필요 레벨 계산 (시뮬레이터의 로직 사용)
+            let requiredLevel = status.requiredLevel;
             // 퀘스트 필요 여부: 퀘스트 미완료 상태에서 59 초과 시
             const questRequired = !questCompleted && totalPoints > maxWithoutQuest;
             // 포인트 초과 여부
             const pointsExceeded = totalPoints > availablePoints;
 
-            // Calculate stats based on categories (스킬로부터 얻는 스탯)
-            let skillStrength = 0;
-            let skillAgility = 0;
-            let skillIntellect = 0;
-            let skillsLearned = 0;
-
-            Object.keys(currentSkills).forEach(skillId => {
-                const points = currentSkills[skillId];
-                if (points > 0) skillsLearned++;
-
-                const category = getCategoryForSkillId(parseInt(skillId));
-
-                if (["힘능력", "용맹특성", "강인특성", "조화능력"].includes(category)) {
-                    skillStrength += points;
-                }
-                if (["민첩능력", "고독특성", "교활특성"].includes(category)) {
-                    skillAgility += points;
-                }
-                if (["화염마법", "얼음마법", "전기마법", "초능력마법", "융합마법", "보조능력", "유용특성"].includes(category)) {
-                    skillIntellect += points;
-                }
-            });
-
-            // 최종 스탯 = 기본 스탯 + 선택 포인트 + 스킬 스탯
-            const strength = baseStats.strength + allocatedStats.strength + skillStrength;
-            const agility = baseStats.agility + allocatedStats.agility + skillAgility;
-            const intellect = baseStats.intellect + allocatedStats.intellect + skillIntellect;
+            // 스탯 값 가져오기
+            const strength = stats.strength;
+            const agility = stats.agility;
+            const intellect = stats.intelligence;
 
             // 스탯 합계 제한 체크
             const totalStats = strength + agility + intellect;
             const statLimitExceeded = totalStats > STAT_LIMIT;
+            
+            // 습득한 스킬 수 계산
+            const skillsLearned = Object.values(currentSkills).filter(points => points > 0).length;
 
             // UI 업데이트
             document.getElementById('totalPoints').textContent = totalPoints;
             document.getElementById('totalPoints').style.color = pointsExceeded ? '#ff4757' : '#667eea';
 
-            // 필요 레벨 표시
+            // 필요 레벨 표시 (시뮬레이터의 getRequiredLevel 사용)
             let levelText = requiredLevel.toString();
             if (questRequired) {
                 levelText = `${requiredLevel} (퀘스트 필요!)`;
@@ -1400,6 +1501,9 @@
 
             // 누락된 스킬 ID를 0으로 초기화
             initializeAllSkills();
+            
+            // 시뮬레이터 초기화
+            updateSimulator();
 
             initializeTabs();
             renderSkills();

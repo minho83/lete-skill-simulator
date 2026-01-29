@@ -1,0 +1,1963 @@
+"{
+  ""gameConfig"": {
+    ""maxLevel"": 50,
+    ""startingPoints"": 10,
+    ""pointsPerLevel"": 1,
+    ""questBonusPoints"": 18,
+    ""maxStatTotal"": 60,
+    ""pointsPerLevelRequired"": 3
+  },
+  ""statTypes"": {
+    ""intelligence"": ""지력"",
+    ""strength"": ""힘"",
+    ""agility"": ""민첩"",
+    ""common"": ""공통"",
+    ""luck"": ""운""
+  },
+  ""categoryStatMapping"": {
+    ""화염마법"": ""intelligence"",
+    ""얼음마법"": ""intelligence"",
+    ""전기마법"": ""intelligence"",
+    ""초능력마법"": ""intelligence"",
+    ""융합마법"": ""intelligence"",
+    ""힘능력"": ""strength"",
+    ""민첩능력"": ""agility"",
+    ""보조능력"": ""common"",
+    ""조화능력"": ""strength"",
+    ""용맹특성"": ""strength"",
+    ""강인특성"": ""strength"",
+    ""고독특성"": ""agility"",
+    ""교활특성"": ""agility"",
+    ""유용특성"": ""luck""
+  },
+  ""skills"": [
+    {
+      ""imageNum"": 1,
+      ""name"": ""화염화살"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 2,
+      ""name"": ""화염구"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 3,
+      ""name"": ""이글거리는 주먹"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 4,
+      ""name"": ""꺼지지않는 지옥불"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 5,
+      ""name"": ""태양풍"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 6,
+      ""name"": ""불기둥"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 7,
+      ""name"": ""플레어"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 8,
+      ""name"": ""화염마법숙련"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 9,
+      ""name"": ""화형"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 10,
+      ""name"": ""화상"",
+      ""category"": ""화염마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""화염마법"",
+        ""지력"",
+        5,
+        1,
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 11,
+      ""name"": ""얼음화살"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 12,
+      ""name"": ""얼음창"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 13,
+      ""name"": ""저체온증"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 14,
+      ""name"": ""한기 작렬"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 15,
+      ""name"": ""아이스 노바"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 16,
+      ""name"": ""혹한"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 17,
+      ""name"": ""냉기 팽창"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 18,
+      ""name"": ""얼음 송곳"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 19,
+      ""name"": ""죽음의 한기"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 20,
+      ""name"": ""얼음마법숙련"",
+      ""category"": ""얼음마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""얼음마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 21,
+      ""name"": ""번개화살"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 22,
+      ""name"": ""뇌격"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 23,
+      ""name"": ""방전"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 24,
+      ""name"": ""불안정한낙뢰"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 25,
+      ""name"": ""초방전 유도체"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 26,
+      ""name"": ""적란운"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 27,
+      ""name"": ""뇌기창"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 28,
+      ""name"": ""번개 마법 숙련"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 29,
+      ""name"": ""태풍"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 30,
+      ""name"": ""전하"",
+      ""category"": ""전기마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""전기마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 31,
+      ""name"": ""초능력 방패"",
+      ""category"": ""초능력마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""초능력마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 32,
+      ""name"": ""마나 보호막"",
+      ""category"": ""초능력마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""초능력마법"",
+        ""지력"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 33,
+      ""name"": ""용암 도끼"",
+      ""category"": ""융합마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""융합마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 34,
+      ""name"": ""초열 선륜"",
+      ""category"": ""융합마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""융합마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 35,
+      ""name"": ""고드름쇄도"",
+      ""category"": ""융합마법"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""융합마법"",
+        ""Unknown"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 36,
+      ""name"": ""공격 자세"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 37,
+      ""name"": ""무기의 달인"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 38,
+      ""name"": ""뭉개기"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 39,
+      ""name"": ""강력한 반격"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 40,
+      ""name"": ""깊은 상처"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 41,
+      ""name"": ""충격"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 42,
+      ""name"": ""마무리 일격"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 43,
+      ""name"": ""전투형 근육"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 44,
+      ""name"": ""뇌진탕"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 45,
+      ""name"": ""전투 호흡"",
+      ""category"": ""힘능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""힘능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 46,
+      ""name"": ""급소 연구"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 47,
+      ""name"": ""급소연구 II"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 48,
+      ""name"": ""치명적인 사격"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 49,
+      ""name"": ""약점"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 50,
+      ""name"": ""얼굴 뭉개기"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 51,
+      ""name"": ""틈새 공략"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 52,
+      ""name"": ""반격"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 53,
+      ""name"": ""숙련된 처내기"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 54,
+      ""name"": ""발전된 급소 연구"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 55,
+      ""name"": ""재빠른 몸놀림"",
+      ""category"": ""민첩능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""민첩능력"",
+        ""민첩"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 56,
+      ""name"": ""몹집 불리기"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 57,
+      ""name"": ""무술"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 58,
+      ""name"": ""마나 샘"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 59,
+      ""name"": ""빠른 신진대사"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 60,
+      ""name"": ""죽고자 하면 살 것이다"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 61,
+      ""name"": ""마법 유물"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 62,
+      ""name"": ""아슬아슬한 처내기"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 63,
+      ""name"": ""손은 눈보다 빠르다"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 64,
+      ""name"": ""마력 조작"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 65,
+      ""name"": ""자연 친화력"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 66,
+      ""name"": ""운수 좋은 날"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 67,
+      ""name"": ""환류"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 68,
+      ""name"": ""돌 피부"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 69,
+      ""name"": ""부등가 교환"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 70,
+      ""name"": ""원소 친화력"",
+      ""category"": ""보조능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""보조능력"",
+        ""공통"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 71,
+      ""name"": ""필살"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 72,
+      ""name"": ""방랑 무사"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 73,
+      ""name"": ""단전 개방"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 74,
+      ""name"": ""근육 밀도 증가"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 75,
+      ""name"": ""최상위 포식자"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 76,
+      ""name"": ""폭발적 마나 분출"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 77,
+      ""name"": ""만인지적"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 78,
+      ""name"": ""환골탈태"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 79,
+      ""name"": ""그림자의 길"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 80,
+      ""name"": ""체내 마나 순환"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 81,
+      ""name"": ""워록"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 82,
+      ""name"": ""잔류 마나 응결"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 83,
+      ""name"": ""근성 강화"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 84,
+      ""name"": ""깨달음"",
+      ""category"": ""조화능력"",
+      ""maxLevel"": 5,
+      ""statRequirements"": [
+        ""조화능력"",
+        ""힘"",
+        5,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 85,
+      ""name"": ""하프 소딩"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 86,
+      ""name"": ""쿤스트 데스 페히톤스"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 87,
+      ""name"": ""막을 수 없는 자"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 88,
+      ""name"": ""전쟁광"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 89,
+      ""name"": ""수박 깨기"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 90,
+      ""name"": ""방벽"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 91,
+      ""name"": ""처형자"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 92,
+      ""name"": ""강인함"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 93,
+      ""name"": ""중보병"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 94,
+      ""name"": ""도살자"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 95,
+      ""name"": ""초인적 반응"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 96,
+      ""name"": ""가시 갑옷"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 97,
+      ""name"": ""묵사발 A"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 98,
+      ""name"": ""나는 서서 죽는다"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 99,
+      ""name"": ""묵사발 B"",
+      ""category"": ""용맹특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""용맹특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 100,
+      ""name"": ""비장의 수"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 101,
+      ""name"": ""근주구력 강화"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 102,
+      ""name"": ""지저분한 절단"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 103,
+      ""name"": ""캄프링겐"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 104,
+      ""name"": ""팡크라티온"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 105,
+      ""name"": ""무자비한 처형"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 106,
+      ""name"": ""결투용 검술"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 107,
+      ""name"": ""콤비네이션"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 108,
+      ""name"": ""쌍수 무기"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 109,
+      ""name"": ""인피르무스"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 110,
+      ""name"": ""보디 블로"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 111,
+      ""name"": ""투지"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 112,
+      ""name"": ""롤링 펀치"",
+      ""category"": ""강인특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""강인특성"",
+        ""힘"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 113,
+      ""name"": ""연격"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 114,
+      ""name"": ""뛰어난 손재주"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 115,
+      ""name"": ""어둠숲 궁술"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 116,
+      ""name"": ""손목 공격"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 117,
+      ""name"": ""스위시 버클러"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 118,
+      ""name"": ""연사"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 119,
+      ""name"": ""예리한 칼날"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 120,
+      ""name"": ""라이슬로퍼"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 121,
+      ""name"": ""저격수"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 122,
+      ""name"": ""예리한 칼날II"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 123,
+      ""name"": ""사냥꾼"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 124,
+      ""name"": ""머리 겨냥"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 125,
+      ""name"": ""연격 II"",
+      ""category"": ""고독특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""고독특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 126,
+      ""name"": ""은신"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 127,
+      ""name"": ""경추 절단"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 128,
+      ""name"": ""낮은 자세"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 129,
+      ""name"": ""난도질"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 130,
+      ""name"": ""희미한 존재감"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 131,
+      ""name"": ""가벼운 발놀림"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 132,
+      ""name"": ""신경 끊기"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 133,
+      ""name"": ""공중 암살"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 134,
+      ""name"": ""수술"",
+      ""category"": ""교활특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""교활특성"",
+        ""민첩"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 135,
+      ""name"": ""도약"",
+      ""category"": ""유용특성"",
+      ""maxLevel"": 1,
+      ""statRequirements"": [
+        ""유용특성"",
+        ""운"",
+        1,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 136,
+      ""name"": ""집중"",
+      ""category"": ""유용특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""유용특성"",
+        ""운"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 137,
+      ""name"": ""긴 도약"",
+      ""category"": ""유용특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""유용특성"",
+        ""운"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 138,
+      ""name"": ""회피"",
+      ""category"": ""유용특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""유용특성"",
+        ""운"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    },
+    {
+      ""imageNum"": 139,
+      ""name"": ""집중 II"",
+      ""category"": ""유용특성"",
+      ""maxLevel"": 3,
+      ""statRequirements"": [
+        ""유용특성"",
+        ""운"",
+        3,
+        ""\""\"""",
+        ""\""\""""
+      ]
+    }
+  ],
+  ""formulas"": {
+    ""requiredLevel"": ""Math.ceil(totalPoints / 3) + 1"",
+    ""availablePoints"": ""10 + (level - 1) + (questCompleted ? 18 : 0)"",
+    ""statCalculation"": ""For each stat type, take the MAX requirement across all skills in categories that map to that stat type. Minimum value is always 1.""
+  },
+  ""calculationLogic"": {
+    ""step1"": ""Group skills by category, take MAX level requirement per category"",
+    ""step2"": ""Map categories to stat types, take MAX across categories for each stat"",
+    ""step3"": ""Ensure minimum stat value of 1"",
+    ""step4"": ""Validate: STR + DEX + INT <= 60""
+  },
+  ""examples"": [
+    {
+      ""name"": ""Beginner Build"",
+      ""level"": 10,
+      ""questCompleted"": false,
+      ""skills"": [
+        {
+          ""name"": ""화염화살"",
+          ""level"": 3
+        },
+        {
+          ""name"": ""얼음화살"",
+          ""level"": 2
+        },
+        {
+          ""name"": ""공격 자세"",
+          ""level"": 1
+        }
+      ],
+      ""expectedStats"": {
+        ""intelligence"": 19,
+        ""strength"": 1,
+        ""agility"": 1
+      },
+      ""expectedPoints"": {
+        ""available"": 19,
+        ""used"": 6
+      }
+    },
+    {
+      ""name"": ""Intermediate Build"",
+      ""level"": 25,
+      ""questCompleted"": true,
+      ""expectedPoints"": {
+        ""available"": 52
+      }
+    },
+    {
+      ""name"": ""Advanced Build"",
+      ""level"": 50,
+      ""questCompleted"": true,
+      ""expectedPoints"": {
+        ""available"": 77
+      }
+    }
+  ],
+  ""testCases"": [
+    {
+      ""id"": 1,
+      ""name"": ""Empty build"",
+      ""input"": [],
+      ""expected"": {
+        ""str"": 1,
+        ""dex"": 1,
+        ""int"": 1,
+        ""points"": 0
+      }
+    },
+    {
+      ""id"": 2,
+      ""name"": ""Single skill"",
+      ""input"": [
+        {
+          ""skill"": ""화염화살"",
+          ""level"": 1
+        }
+      ],
+      ""expected"": {
+        ""int"": 1
+      }
+    },
+    {
+      ""id"": 3,
+      ""name"": ""Max same category"",
+      ""input"": [
+        {
+          ""skill"": ""화염화살"",
+          ""level"": 3
+        },
+        {
+          ""skill"": ""화염구"",
+          ""level"": 2
+        }
+      ],
+      ""expected"": {
+        ""int"": 19
+      }
+    },
+    {
+      ""id"": 4,
+      ""name"": ""Stat limit"",
+      ""validation"": ""STR + DEX + INT <= 60""
+    },
+    {
+      ""id"": 5,
+      ""name"": ""Quest bonus"",
+      ""level"": 20,
+      ""quest"": true,
+      ""expected"": {
+        ""available"": 47
+      }
+    },
+    {
+      ""id"": 6,
+      ""name"": ""Level requirement"",
+      ""points"": 30,
+      ""expected"": {
+        ""requiredLevel"": 11
+      }
+    },
+    {"								

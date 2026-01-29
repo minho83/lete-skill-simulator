@@ -1167,7 +1167,7 @@
         function updateSimulator() {
             const skillsArray = convertSkillsToArray(currentSkills);
             skillSimulator = new SkillSimulator(skillsArray);
-            skillSimulator.level = 1; // 필요시 레벨 설정
+            skillSimulator.level = MAX_LEVEL; // 최대 레벨 기준으로 포인트 계산
             skillSimulator.questCompleted = questCompleted;
         }
 

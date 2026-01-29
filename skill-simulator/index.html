@@ -3,542 +3,1407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스킬 시뮬레이터 - 이미지 맵핑 도구</title>
+    <title>레테 스킬 시뮬레이터 - 웹 버전</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a2e;
-            color: #eee;
+            font-family: -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e4e4e4;
             min-height: 100vh;
-            padding: 20px;
         }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #00d4ff;
-        }
-
-        .toolbar {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .toolbar button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: #00d4ff;
-            color: #1a1a2e;
-        }
-
-        .btn-secondary {
-            background: #4a4a6a;
-            color: #fff;
-        }
-
-        .btn-success {
-            background: #00ff88;
-            color: #1a1a2e;
-        }
-
-        .btn-danger {
-            background: #ff4757;
-            color: #fff;
-        }
-
-        .toolbar button:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-
-        .skill-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 10px;
-            max-width: 1200px;
+        
+        .container-main {
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            background: #16213e;
-            border-radius: 10px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+        }
+        
+        .tabs-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         }
 
-        .skill-slot {
-            width: 70px;
-            height: 70px;
-            border: 2px dashed #4a4a6a;
-            border-radius: 8px;
+        /* PC: 7열 그리드 */
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        /* 모바일: select 드롭다운 */
+        .category-select {
+            display: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #e4e4e4;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e4e4e4' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .category-select:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .category-select option {
+            background: #1a1a2e;
+            color: #e4e4e4;
+            padding: 10px;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            white-space: nowrap;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .tab-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 8px;
+        }
+
+        /* 퀘스트 버튼 */
+        .quest-toggle {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .quest-toggle label {
+            font-weight: 600;
+            color: #a0aec0;
+        }
+
+        .quest-checkbox {
+            width: 24px;
+            height: 24px;
             cursor: pointer;
-            transition: all 0.3s;
+            accent-color: #667eea;
+        }
+
+        .quest-bonus {
+            color: #00ff88;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                display: none;
+            }
+            .category-select {
+                display: block;
+            }
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
             position: relative;
-            background: #0f0f23;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 45px 15px 20px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .skill-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .skill-card:hover::before {
+            opacity: 0.5;
+        }
+        
+        .skill-card.unpurchased {
+            opacity: 0.5;
+            filter: grayscale(0.7);
+        }
+        
+        .skill-card.max-level {
+            border-color: #fbbf24;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+        
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
         }
 
-        .skill-slot:hover {
-            border-color: #00d4ff;
-            transform: scale(1.1);
-            z-index: 10;
-        }
-
-        .skill-slot.mapped {
-            border: 2px solid #00ff88;
-        }
-
-        .skill-slot img {
+        .skill-icon img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            border-radius: 6px;
+            object-fit: cover;
+            border-radius: 10px;
         }
-
-        .skill-slot .slot-number {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            font-size: 10px;
-            color: #666;
-            background: rgba(0,0,0,0.5);
-            padding: 1px 4px;
+        
+        .skill-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #e4e4e4;
+        }
+        
+        .skill-max-level {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            margin-bottom: 12px;
+        }
+        
+        .skill-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .skill-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .skill-btn:hover:not(:disabled) {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .skill-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .skill-level-display {
+            flex: 1;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
             border-radius: 3px;
         }
-
-        .skill-slot .remove-btn {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 20px;
-            height: 20px;
-            background: #ff4757;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-        }
-
-        .skill-slot.mapped:hover .remove-btn {
-            display: block;
-        }
-
-        /* Modal */
+        
+        .category-fire { color: #ef4444; }
+        .category-ice { color: #3b82f6; }
+        .category-lightning { color: #eab308; }
+        .category-psychic { color: #a855f7; }
+        .category-fusion { color: #f97316; }
+        .category-strength { color: #10b981; }
+        .category-agility { color: #06b6d4; }
+        .category-support { color: #f0abfc; }
+        .category-harmony { color: #84cc16; }
+        .category-bravery { color: #dc2626; }
+        .category-fortitude { color: #78716c; }
+        .category-solitude { color: #1e40af; }
+        .category-cunning { color: #64748b; }
+        .category-utility { color: #f59e0b; }
+        
         .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            display: block;
-        }
-
-        .modal-content {
-            background: #16213e;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h2 {
-            color: #00d4ff;
-        }
-
-        .close-btn {
-            background: #ff4757;
-            border: none;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 8px;
-        }
-
-        .image-option {
-            width: 60px;
-            height: 60px;
-            border: 2px solid #4a4a6a;
-            border-radius: 5px;
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .image-option:hover {
-            border-color: #00d4ff;
-            transform: scale(1.1);
-        }
-
-        .image-option.used {
-            opacity: 0.3;
-            border-color: #ff4757;
-        }
-
-        .image-option img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .image-option .img-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
             right: 0;
-            font-size: 8px;
-            background: rgba(0,0,0,0.7);
-            color: #fff;
-            text-align: center;
-            padding: 1px;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
-
-        /* JSON Output */
-        .json-output {
-            background: #0f0f23;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            max-height: 300px;
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
             overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
-
-        .json-output pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-size: 12px;
-            color: #00ff88;
+        
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #667eea;
         }
-
-        .stats {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #888;
-        }
-
-        .filter-bar {
+        
+        .export-code {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
             margin-bottom: 15px;
+            color: #a0aec0;
         }
-
-        .filter-bar input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #4a4a6a;
-            border-radius: 5px;
-            background: #0f0f23;
-            color: #fff;
-            font-size: 14px;
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+            max-width: 250px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
-    <h1>스킬 시뮬레이터 - 이미지 맵핑 도구</h1>
+    <div class="container-main">
+        <div class="header">
+            <h1 class="title">⚔️ 레테 스킬 시뮬레이터 ⚔️</h1>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-label">총 사용 포인트</div>
+                    <div class="stat-value" id="totalPoints">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">남은 포인트</div>
+                    <div class="stat-value" id="remainingPoints">77</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">필요 레벨 (최대 50)</div>
+                    <div class="stat-value" id="requiredLevel">1</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">힘 (Strength)</div>
+                    <div class="stat-value" id="strengthStat">1</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">민첩 (Agility)</div>
+                    <div class="stat-value" id="agilityStat">1</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">지력 (Intellect)</div>
+                    <div class="stat-value" id="intellectStat">1</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">스탯 합계 (제한: 62)</div>
+                    <div class="stat-value" id="statLimit">3 / 62</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">럭 (Luck)</div>
+                    <div class="stat-value" id="luckStat">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">스킬 습득</div>
+                    <div class="stat-value" id="skillsLearned">0 / 139</div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="saveProgress()">
+                    <i class="fas fa-save"></i> 저장하기
+                </button>
+                <button class="btn btn-success" onclick="loadProgress()">
+                    <i class="fas fa-upload"></i> 불러오기
+                </button>
+                <button class="btn btn-primary" onclick="exportBuild()">
+                    <i class="fas fa-share-alt"></i> 빌드 공유
+                </button>
+                <button class="btn btn-danger" onclick="resetAll()">
+                    <i class="fas fa-redo"></i> 초기화
+                </button>
+            </div>
+        </div>
+        
+        <div class="quest-toggle">
+            <label for="questCheckbox">퀘스트 완료</label>
+            <input type="checkbox" id="questCheckbox" class="quest-checkbox" onchange="toggleQuest()">
+            <span class="quest-bonus" id="questBonusText">(+18 포인트)</span>
+        </div>
 
-    <div class="stats">
-        맵핑 완료: <span id="mappedCount">0</span> / <span id="totalSlots">139</span>
+        <div class="tabs-container">
+            <!-- 모바일: 셀렉트 드롭다운 -->
+            <select class="category-select" id="categorySelect" onchange="switchCategoryFromSelect()"></select>
+            <!-- PC: 2열 그리드 탭 -->
+            <div class="tabs" id="categoryTabs"></div>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="스킬 검색..." onkeyup="filterSkills()">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        
+        <div id="skillsContainer"></div>
     </div>
-
-    <div class="toolbar">
-        <button class="btn-primary" onclick="exportMapping()">맵핑 데이터 내보내기 (JSON)</button>
-        <button class="btn-secondary" onclick="importMapping()">맵핑 데이터 불러오기</button>
-        <button class="btn-success" onclick="saveToLocalStorage()">로컬 저장</button>
-        <button class="btn-secondary" onclick="loadFromLocalStorage()">로컬 불러오기</button>
-        <button class="btn-danger" onclick="clearAllMappings()">전체 초기화</button>
-    </div>
-
-    <div class="skill-grid" id="skillGrid">
-        <!-- 139개의 스킬 슬롯이 여기에 생성됩니다 -->
-    </div>
-
-    <div class="json-output" id="jsonOutput" style="display: none;">
-        <h3>맵핑 데이터 (JSON)</h3>
-        <pre id="jsonContent"></pre>
-    </div>
-
-    <!-- 이미지 선택 모달 -->
-    <div class="modal" id="imageModal">
+    
+    <div class="modal" id="exportModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>슬롯 #<span id="currentSlot"></span> - 이미지 선택</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="filter-bar">
-                <input type="text" id="imageFilter" placeholder="이미지 이름으로 검색..." oninput="filterImages()">
-            </div>
-            <div class="image-grid" id="imageGrid">
-                <!-- 이미지 옵션들이 여기에 생성됩니다 -->
+            <div class="modal-header">빌드 코드 공유</div>
+            <div class="export-code" id="exportCode"></div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> 복사하기
+                </button>
+                <button class="btn btn-danger" onclick="closeModal()">
+                    <i class="fas fa-times"></i> 닫기
+                </button>
             </div>
         </div>
     </div>
-
-    <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
-
+    
+    <div class="tooltip" id="tooltip"></div>
+    
     <script>
-        const TOTAL_SLOTS = 139;
-        let mappings = {}; // { slotId: imageName }
-        let availableImages = [];
-        let currentEditingSlot = null;
+        // skill_mapping.md 기반 139개 스킬 데이터
+        const skillsData = {
+            "화염마법": [
+                {id: 1, name: "화염화살", maxLevel: 5},
+                {id: 2, name: "화염구", maxLevel: 5},
+                {id: 3, name: "이글거리는 주먹", maxLevel: 5},
+                {id: 4, name: "꺼지지않는 지옥불", maxLevel: 5},
+                {id: 5, name: "태양풍", maxLevel: 5},
+                {id: 6, name: "불기둥", maxLevel: 5},
+                {id: 7, name: "플레어", maxLevel: 5},
+                {id: 8, name: "화염마법숙련", maxLevel: 5},
+                {id: 9, name: "화형", maxLevel: 5},
+                {id: 10, name: "화상", maxLevel: 5}
+            ],
+            "얼음마법": [
+                {id: 11, name: "얼음화살", maxLevel: 5},
+                {id: 12, name: "얼음창", maxLevel: 5},
+                {id: 13, name: "저체온증", maxLevel: 5},
+                {id: 14, name: "한기 작렬", maxLevel: 5},
+                {id: 15, name: "아이스 노바", maxLevel: 5},
+                {id: 16, name: "혹한", maxLevel: 5},
+                {id: 17, name: "냉기 팽창", maxLevel: 5},
+                {id: 18, name: "얼음 송곳", maxLevel: 5},
+                {id: 19, name: "죽음의 한기", maxLevel: 5},
+                {id: 20, name: "얼음마법숙련", maxLevel: 5}
+            ],
+            "전기마법": [
+                {id: 21, name: "번개화살", maxLevel: 5},
+                {id: 22, name: "뇌격", maxLevel: 5},
+                {id: 23, name: "방전", maxLevel: 5},
+                {id: 24, name: "불안정한낙뢰", maxLevel: 5},
+                {id: 25, name: "초방전 유도체", maxLevel: 5},
+                {id: 26, name: "적란운", maxLevel: 5},
+                {id: 27, name: "뇌기창", maxLevel: 5},
+                {id: 28, name: "번개 마법 숙련", maxLevel: 5},
+                {id: 29, name: "태풍", maxLevel: 5},
+                {id: 30, name: "전하", maxLevel: 5}
+            ],
+            "초능력마법": [
+                {id: 31, name: "초능력 방패", maxLevel: 5},
+                {id: 32, name: "마나 보호막", maxLevel: 5}
+            ],
+            "융합마법": [
+                {id: 33, name: "용암 도끼", maxLevel: 5},
+                {id: 34, name: "초열 선륜", maxLevel: 5},
+                {id: 35, name: "고드름쇄도", maxLevel: 5}
+            ],
+            "힘능력": [
+                {id: 36, name: "공격 자세", maxLevel: 5},
+                {id: 37, name: "무기의 달인", maxLevel: 5},
+                {id: 38, name: "뭉개기", maxLevel: 5},
+                {id: 39, name: "강력한 반격", maxLevel: 5},
+                {id: 40, name: "깊은 상처", maxLevel: 5},
+                {id: 41, name: "충격", maxLevel: 5},
+                {id: 42, name: "마무리 일격", maxLevel: 5},
+                {id: 43, name: "전투형 근육", maxLevel: 5},
+                {id: 44, name: "뇌진탕", maxLevel: 5},
+                {id: 45, name: "전투 호흡", maxLevel: 5}
+            ],
+            "민첩능력": [
+                {id: 46, name: "급소 연구", maxLevel: 5},
+                {id: 47, name: "급소연구 II", maxLevel: 5},
+                {id: 48, name: "치명적인 사격", maxLevel: 5},
+                {id: 49, name: "약점", maxLevel: 5},
+                {id: 50, name: "얼굴 뭉개기", maxLevel: 5},
+                {id: 51, name: "틈새 공략", maxLevel: 5},
+                {id: 52, name: "반격", maxLevel: 5},
+                {id: 53, name: "숙련된 처내기", maxLevel: 5},
+                {id: 54, name: "발전된 급소 연구", maxLevel: 5},
+                {id: 55, name: "재빠른 몸놀림", maxLevel: 5}
+            ],
+            "보조능력": [
+                {id: 56, name: "몹집 불리기", maxLevel: 5},
+                {id: 57, name: "무술", maxLevel: 5},
+                {id: 58, name: "마나 샘", maxLevel: 5},
+                {id: 59, name: "빠른 신진대사", maxLevel: 5},
+                {id: 60, name: "죽고자 하면 살 것이다", maxLevel: 5},
+                {id: 61, name: "마법 유물", maxLevel: 5},
+                {id: 62, name: "아슬아슬한 처내기", maxLevel: 5},
+                {id: 63, name: "손은 눈보다 빠르다", maxLevel: 5},
+                {id: 64, name: "마력 조작", maxLevel: 5},
+                {id: 65, name: "자연 친화력", maxLevel: 5},
+                {id: 66, name: "운수 좋은 날", maxLevel: 5},
+                {id: 67, name: "환류", maxLevel: 5},
+                {id: 68, name: "돌 피부", maxLevel: 5},
+                {id: 69, name: "부등가 교환", maxLevel: 5},
+                {id: 70, name: "원소 친화력", maxLevel: 5}
+            ],
+            "조화능력": [
+                {id: 71, name: "필살", maxLevel: 5},
+                {id: 72, name: "방랑 무사", maxLevel: 5},
+                {id: 73, name: "단전 개방", maxLevel: 5},
+                {id: 74, name: "근육 밀도 증가", maxLevel: 5},
+                {id: 75, name: "최상위 포식자", maxLevel: 5},
+                {id: 76, name: "폭발적 마나 분출", maxLevel: 5},
+                {id: 77, name: "만인지적", maxLevel: 5},
+                {id: 78, name: "환골탈태", maxLevel: 5},
+                {id: 79, name: "그림자의 길", maxLevel: 5},
+                {id: 80, name: "체내 마나 순환", maxLevel: 5},
+                {id: 81, name: "워록", maxLevel: 5},
+                {id: 82, name: "잔류 마나 응결", maxLevel: 5},
+                {id: 83, name: "근성 강화", maxLevel: 5},
+                {id: 84, name: "깨달음", maxLevel: 5}
+            ],
+            "용맹특성": [
+                {id: 85, name: "하프 소딩", maxLevel: 3},
+                {id: 86, name: "쿤스트 데스 페히톤스", maxLevel: 3},
+                {id: 87, name: "막을 수 없는 자", maxLevel: 3},
+                {id: 88, name: "전쟁광", maxLevel: 3},
+                {id: 89, name: "수박 깨기", maxLevel: 3},
+                {id: 90, name: "방벽", maxLevel: 3},
+                {id: 91, name: "처형자", maxLevel: 3},
+                {id: 92, name: "강인함", maxLevel: 3},
+                {id: 93, name: "중보병", maxLevel: 3},
+                {id: 94, name: "도살자", maxLevel: 3},
+                {id: 95, name: "초인적 반응", maxLevel: 3},
+                {id: 96, name: "가시 갑옷", maxLevel: 3},
+                {id: 97, name: "묵사발 A", maxLevel: 3},
+                {id: 98, name: "나는 서서 죽는다", maxLevel: 3},
+                {id: 99, name: "묵사발 B", maxLevel: 3}
+            ],
+            "강인특성": [
+                {id: 100, name: "비장의 수", maxLevel: 3},
+                {id: 101, name: "근주구력 강화", maxLevel: 3},
+                {id: 102, name: "지저분한 절단", maxLevel: 3},
+                {id: 103, name: "캄프링겐", maxLevel: 3},
+                {id: 104, name: "팡크라티온", maxLevel: 3},
+                {id: 105, name: "무자비한 처형", maxLevel: 3},
+                {id: 106, name: "결투용 검술", maxLevel: 3},
+                {id: 107, name: "콤비네이션", maxLevel: 3},
+                {id: 108, name: "쌍수 무기", maxLevel: 3},
+                {id: 109, name: "인피르무스", maxLevel: 3},
+                {id: 110, name: "보디 블로", maxLevel: 3},
+                {id: 111, name: "투지", maxLevel: 3},
+                {id: 112, name: "롤링 펀치", maxLevel: 3}
+            ],
+            "고독특성": [
+                {id: 113, name: "연격", maxLevel: 3},
+                {id: 114, name: "뛰어난 손재주", maxLevel: 3},
+                {id: 115, name: "어둠숲 궁술", maxLevel: 3},
+                {id: 116, name: "손목 공격", maxLevel: 3},
+                {id: 117, name: "스위시 버클러", maxLevel: 3},
+                {id: 118, name: "연사", maxLevel: 3},
+                {id: 119, name: "예리한 칼날", maxLevel: 3},
+                {id: 120, name: "라이슬로퍼", maxLevel: 3},
+                {id: 121, name: "저격수", maxLevel: 3},
+                {id: 122, name: "예리한 칼날II", maxLevel: 3},
+                {id: 123, name: "사냥꾼", maxLevel: 3},
+                {id: 124, name: "머리 겨냥", maxLevel: 3},
+                {id: 125, name: "연격 II", maxLevel: 3}
+            ],
+            "교활특성": [
+                {id: 126, name: "은신", maxLevel: 3},
+                {id: 127, name: "경추 절단", maxLevel: 3},
+                {id: 128, name: "낮은 자세", maxLevel: 3},
+                {id: 129, name: "난도질", maxLevel: 3},
+                {id: 130, name: "희미한 존재감", maxLevel: 3},
+                {id: 131, name: "가벼운 발놀림", maxLevel: 3},
+                {id: 132, name: "신경 끊기", maxLevel: 3},
+                {id: 133, name: "공중 암살", maxLevel: 3},
+                {id: 134, name: "수술", maxLevel: 3}
+            ],
+            "유용특성": [
+                {id: 135, name: "도약", maxLevel: 1},
+                {id: 136, name: "집중", maxLevel: 3},
+                {id: 137, name: "긴 도약", maxLevel: 3},
+                {id: 138, name: "회피", maxLevel: 3},
+                {id: 139, name: "집중 II", maxLevel: 3}
+            ]
+        };
 
-        // 이미지 목록 로드
-        async function loadImageList() {
-            // images 폴더의 이미지 목록 (image001.png ~ image280.png)
-            availableImages = [];
-            for (let i = 1; i <= 280; i++) {
-                const num = String(i).padStart(3, '0');
-                // jpg는 image002만 있음
-                if (i === 2) {
-                    availableImages.push(`image${num}.jpg`);
-                } else {
-                    availableImages.push(`image${num}.png`);
-                }
-            }
-        }
+        let currentSkills = {};
+        let currentCategory = "화염마법";
+        let questCompleted = false;
+        
+        // (스탯은 스킬 포인트에서 자동 계산, 최소값 1 보장)
 
-        // 스킬 슬롯 생성
-        function createSkillSlots() {
-            const grid = document.getElementById('skillGrid');
-            grid.innerHTML = '';
-
-            for (let i = 1; i <= TOTAL_SLOTS; i++) {
-                const slot = document.createElement('div');
-                slot.className = 'skill-slot';
-                slot.dataset.slot = i;
-                slot.onclick = () => openImageSelector(i);
-
-                const slotNumber = document.createElement('span');
-                slotNumber.className = 'slot-number';
-                slotNumber.textContent = i;
-                slot.appendChild(slotNumber);
-
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'remove-btn';
-                removeBtn.textContent = '×';
-                removeBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    removeMapping(i);
-                };
-                slot.appendChild(removeBtn);
-
-                if (mappings[i]) {
-                    const img = document.createElement('img');
-                    img.src = `images/${mappings[i]}`;
-                    img.alt = `Skill ${i}`;
-                    img.onerror = () => { img.style.display = 'none'; };
-                    slot.appendChild(img);
-                    slot.classList.add('mapped');
-                }
-
-                grid.appendChild(slot);
-            }
-
-            updateStats();
-        }
-
-        // 이미지 선택 모달 열기
-        function openImageSelector(slotId) {
-            currentEditingSlot = slotId;
-            document.getElementById('currentSlot').textContent = slotId;
-            renderImageOptions();
-            document.getElementById('imageModal').classList.add('active');
-            document.getElementById('imageFilter').value = '';
-        }
-
-        // 이미지 옵션 렌더링
-        function renderImageOptions(filter = '') {
-            const grid = document.getElementById('imageGrid');
-            grid.innerHTML = '';
-
-            const usedImages = Object.values(mappings);
-            const filterLower = filter.toLowerCase();
-
-            availableImages.forEach(imgName => {
-                if (filterLower && !imgName.toLowerCase().includes(filterLower)) {
-                    return;
-                }
-
-                const option = document.createElement('div');
-                option.className = 'image-option';
-                if (usedImages.includes(imgName) && mappings[currentEditingSlot] !== imgName) {
-                    option.classList.add('used');
-                }
-
-                const img = document.createElement('img');
-                img.src = `images/${imgName}`;
-                img.alt = imgName;
-                img.onerror = () => { option.style.display = 'none'; };
-                option.appendChild(img);
-
-                const nameLabel = document.createElement('span');
-                nameLabel.className = 'img-name';
-                nameLabel.textContent = imgName.replace('image', '').replace('.png', '').replace('.jpg', '');
-                option.appendChild(nameLabel);
-
-                option.onclick = () => selectImage(imgName);
-                grid.appendChild(option);
+        // 모든 스킬을 0으로 초기화하는 함수
+        function initializeAllSkills() {
+            Object.keys(skillsData).forEach(category => {
+                skillsData[category].forEach(skill => {
+                    if (currentSkills[skill.id] === undefined) {
+                        currentSkills[skill.id] = 0;
+                    }
+                });
             });
         }
 
-        // 이미지 필터링
-        function filterImages() {
-            const filter = document.getElementById('imageFilter').value;
-            renderImageOptions(filter);
+        // Initialize skills with 0 points
+        initializeAllSkills();
+
+        // Category color mapping
+        const categoryColors = {
+            "화염마법": "#ef4444",
+            "얼음마법": "#3b82f6",
+            "전기마법": "#eab308",
+            "초능력마법": "#a855f7",
+            "융합마법": "#f97316",
+            "힘능력": "#10b981",
+            "민첩능력": "#06b6d4",
+            "보조능력": "#f0abfc",
+            "조화능력": "#84cc16",
+            "용맹특성": "#dc2626",
+            "강인특성": "#78716c",
+            "고독특성": "#1e40af",
+            "교활특성": "#64748b",
+            "유용특성": "#f59e0b"
+        };
+
+        // Category icons
+        const categoryIcons = {
+            "화염마법": "🔥",
+            "얼음마법": "❄️",
+            "전기마법": "⚡",
+            "초능력마법": "🔮",
+            "융합마법": "🌟",
+            "힘능력": "💪",
+            "민첩능력": "🏃",
+            "보조능력": "🛡️",
+            "조화능력": "☯️",
+            "용맹특성": "⚔️",
+            "강인특성": "🛡️",
+            "고독특성": "🎯",
+            "교활특성": "🗡️",
+            "유용특성": "🔧"
+        };
+
+        // 스킬 이미지 매핑 (스킬 ID → 이미지 번호, 1:1 매핑)
+        // skill_mapping.md 기반: Image# = Skill ID
+        function getSkillImagePath(skillId) {
+            if (skillId >= 1 && skillId <= 139) {
+                const numStr = String(skillId).padStart(3, '0');
+                // image002만 jpg, 나머지는 png
+                const ext = skillId === 2 ? 'jpg' : 'png';
+                return `images/image${numStr}.${ext}`;
+            }
+            return null;
         }
 
-        // 이미지 선택
-        function selectImage(imgName) {
-            mappings[currentEditingSlot] = imgName;
-            closeModal();
-            createSkillSlots();
+        function initializeTabs() {
+            const tabsContainer = document.getElementById('categoryTabs');
+            const selectContainer = document.getElementById('categorySelect');
+            tabsContainer.innerHTML = '';
+            selectContainer.innerHTML = '';
+
+            Object.keys(skillsData).forEach(category => {
+                // PC용 탭
+                const tab = document.createElement('div');
+                tab.className = `tab ${category === currentCategory ? 'active' : ''}`;
+                tab.style.color = categoryColors[category];
+                tab.innerHTML = `
+                    ${categoryIcons[category]} ${category}
+                    <span class="tab-badge">${skillsData[category].length}</span>
+                `;
+                tab.onclick = () => switchCategory(category);
+                tabsContainer.appendChild(tab);
+
+                // 모바일용 셀렉트 옵션
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = `${categoryIcons[category]} ${category} (${skillsData[category].length})`;
+                option.selected = category === currentCategory;
+                selectContainer.appendChild(option);
+            });
         }
 
-        // 맵핑 제거
-        function removeMapping(slotId) {
-            delete mappings[slotId];
-            createSkillSlots();
+        function switchCategory(category) {
+            currentCategory = category;
+            initializeTabs();
+            renderSkills();
         }
 
-        // 모달 닫기
-        function closeModal() {
-            document.getElementById('imageModal').classList.remove('active');
-            currentEditingSlot = null;
+        function switchCategoryFromSelect() {
+            const select = document.getElementById('categorySelect');
+            switchCategory(select.value);
         }
 
-        // 통계 업데이트
-        function updateStats() {
-            const mappedCount = Object.keys(mappings).length;
-            document.getElementById('mappedCount').textContent = mappedCount;
+        function toggleQuest() {
+            questCompleted = document.getElementById('questCheckbox').checked;
+            if (skillSimulator) {
+                skillSimulator.questCompleted = questCompleted;
+            }
+            updateStats();
+            autoSave();
         }
+        
+        function renderSkills() {
+            const container = document.getElementById('skillsContainer');
+            const skills = skillsData[currentCategory];
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            const filteredSkills = skills.filter(skill => 
+                skill.name.toLowerCase().includes(searchTerm)
+            );
+            
+            container.innerHTML = '<div class="skills-grid">' + filteredSkills.map(skill => {
+                const current = currentSkills[skill.id];
+                const cardClass = current === 0 ? 'unpurchased' : (current === skill.maxLevel ? 'max-level' : '');
+                const progress = (current / skill.maxLevel) * 100;
+                const imagePath = getSkillImagePath(skill.id);
 
-        // 맵핑 데이터 내보내기
-        function exportMapping() {
-            const data = {
-                version: "1.0",
-                totalSlots: TOTAL_SLOTS,
-                mappings: mappings,
-                skills: Object.entries(mappings).map(([slot, image]) => ({
-                    id: parseInt(slot),
-                    image: image,
-                    name: `스킬 ${slot}` // 사용자가 나중에 수정 가능
-                }))
+                // 이미지가 있으면 이미지 표시, 없으면 기본 아이콘
+                const iconContent = imagePath
+                    ? `<img src="${imagePath}" alt="${skill.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${categoryIcons[currentCategory] || '?'}';">`
+                    : categoryIcons[currentCategory] || '?';
+
+                return `
+                    <div class="skill-card ${cardClass}" onmouseenter="showTooltip(event, ${skill.id})" onmouseleave="hideTooltip()">
+                        <div class="skill-icon" style="background: ${categoryColors[currentCategory]}33; border-color: ${categoryColors[currentCategory]};">
+                            ${iconContent}
+                        </div>
+                        <div class="skill-name">${skill.name}</div>
+                        <div class="skill-max-level">MAX Lv.${skill.maxLevel}</div>
+                        <div class="skill-controls">
+                            <button class="skill-btn" onclick="decreaseSkill(${skill.id})" ${current === 0 ? 'disabled' : ''}>
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="skill-level-display">
+                                ${current} / ${skill.maxLevel}
+                            </div>
+                            <button class="skill-btn" onclick="increaseSkill(${skill.id})" ${current >= skill.maxLevel ? 'disabled' : ''}>
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%; background: ${categoryColors[currentCategory]};"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('') + '</div>';
+        }
+        
+        // 스탯 합계 검증
+        function validateStats(strength, agility, intellect) {
+            const total = strength + agility + intellect;
+
+            if (total > STAT_LIMIT) {
+                return {
+                    valid: false,
+                    message: `스탯 합계는 ${STAT_LIMIT}을 초과할 수 없습니다. (현재: ${total})`
+                };
+            }
+
+            return { valid: true, remaining: STAT_LIMIT - total };
+        }
+        
+        // 스킬 추가 시 스탯 초과 여부 미리 계산
+        function canIncreaseSkill(skillId) {
+            // 임시로 스킬 포인트 증가 시뮬레이션
+            const tempSkills = { ...currentSkills };
+            tempSkills[skillId] = (tempSkills[skillId] || 0) + 1;
+            
+            // 시뮬레이터로 검증
+            const tempSkillsArray = convertSkillsToArray(tempSkills);
+            const tempSimulator = new SkillSimulator(tempSkillsArray);
+            tempSimulator.level = skillSimulator ? skillSimulator.level : 1;
+            tempSimulator.questCompleted = questCompleted;
+            
+            const validation = tempSimulator.validateStats();
+            
+            return {
+                valid: validation.valid,
+                message: validation.valid 
+                    ? null 
+                    : `스탯 합계는 ${STAT_LIMIT}을 초과할 수 없습니다. (현재: ${validation.total})`
             };
-
-            const jsonStr = JSON.stringify(data, null, 2);
-
-            // JSON 표시
-            document.getElementById('jsonOutput').style.display = 'block';
-            document.getElementById('jsonContent').textContent = jsonStr;
-
-            // 파일 다운로드
-            const blob = new Blob([jsonStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'skill-mappings.json';
-            a.click();
-            URL.revokeObjectURL(url);
         }
 
-        // 맵핑 데이터 불러오기
-        function importMapping() {
-            document.getElementById('fileInput').click();
+        function increaseSkill(skillId) {
+            const skill = findSkillById(skillId);
+            if (!skill || currentSkills[skillId] >= skill.maxLevel) return;
+
+            // 스탯 제한 검증 (시뮬레이터 사용)
+            updateSimulator();
+            const validation = canIncreaseSkill(skillId);
+            if (!validation.valid) {
+                alert(validation.message);
+                return;
+            }
+
+            // 포인트 제한 검증 (시뮬레이터 사용)
+            const status = skillSimulator.getStatus();
+            const availablePoints = status.availablePoints;
+            const usedPoints = status.usedPoints;
+
+            if (usedPoints >= availablePoints) {
+                alert(`사용 가능한 포인트를 모두 사용했습니다. (최대: ${availablePoints})`);
+                return;
+            }
+
+            currentSkills[skillId]++;
+            updateStats();
+            renderSkills();
+            autoSave();
         }
 
-        // 파일 import 처리
-        function handleFileImport(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        function decreaseSkill(skillId) {
+            if (currentSkills[skillId] > 0) {
+                currentSkills[skillId]--;
+                updateStats();
+                renderSkills();
+                autoSave();
+            }
+        }
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.mappings) {
-                        mappings = data.mappings;
-                        createSkillSlots();
-                        alert('맵핑 데이터를 불러왔습니다!');
-                    }
-                } catch (err) {
-                    alert('JSON 파일을 파싱할 수 없습니다.');
+        function findSkillById(id) {
+            for (const category in skillsData) {
+                const skill = skillsData[category].find(s => s.id === id);
+                if (skill) return skill;
+            }
+            return null;
+        }
+
+        function getCategoryForSkillId(id) {
+            for (const category in skillsData) {
+                if (skillsData[category].find(s => s.id === id)) {
+                    return category;
                 }
+            }
+            return "";
+        }
+        
+        // 포인트 시스템 상수
+        const MAX_LEVEL = 50;
+        const BASE_POINTS = 10;        // 레벨 1 시작 포인트
+        const POINTS_PER_LEVEL = 1;    // 레벨업당 추가 포인트
+        const QUEST_BONUS = 18;        // 퀘스트 완료 보너스
+        const STAT_LIMIT = 62;         // 힘 + 민첩 + 지력 합계 제한
+
+        // 스킬 객체를 배열로 변환하는 헬퍼 함수
+        function convertSkillsToArray(skillsObj) {
+            return Object.keys(skillsObj).map(id => ({
+                id: parseInt(id),
+                currentPoints: skillsObj[id] || 0
+            }));
+        }
+
+        // 카테고리 → 스탯 타입 매핑
+        const categoryStatMapping = {
+            "화염마법": "intelligence",
+            "얼음마법": "intelligence",
+            "전기마법": "intelligence",
+            "초능력마법": "intelligence",
+            "융합마법": "intelligence",
+            "힘능력": "strength",
+            "민첩능력": "agility",
+            "보조능력": "common",      // 공통: STR/AGI/INT에 미포함
+            "조화능력": "strength",
+            "용맹특성": "strength",
+            "강인특성": "strength",
+            "고독특성": "agility",
+            "교활특성": "agility",
+            "유용특성": "luck"          // 운: STR/AGI/INT 합계에 미포함
+        };
+
+        // 스탯 계산 함수 (카테고리별로 분류)
+        function calculateStats(skillsArray) {
+            let strength = 0;
+            let agility = 0;
+            let intelligence = 0;
+            let luck = 0;
+
+            skillsArray.forEach(skill => {
+                if (skill.currentPoints === 0) return;
+
+                const category = getCategoryForSkillId(skill.id);
+                const statType = categoryStatMapping[category];
+                const points = skill.currentPoints;
+
+                if (statType === "strength") strength += points;
+                else if (statType === "agility") agility += points;
+                else if (statType === "intelligence") intelligence += points;
+                else if (statType === "luck") luck += points;
+                // "common"은 어떤 주요 스탯에도 기여하지 않음
+            });
+
+            return {
+                strength: Math.max(1, strength),
+                agility: Math.max(1, agility),
+                intelligence: Math.max(1, intelligence),
+                luck: luck
             };
-            reader.readAsText(file);
-            event.target.value = '';
         }
 
-        // 로컬 스토리지에 저장
-        function saveToLocalStorage() {
-            localStorage.setItem('skillMappings', JSON.stringify(mappings));
-            alert('로컬 스토리지에 저장되었습니다!');
+        // SkillSimulator 클래스
+        class SkillSimulator {
+            constructor(skills) {
+                // skills는 배열 형태 [{id, currentPoints}, ...]
+                this.skills = skills || [];
+                this.level = 1;
+                this.questCompleted = false;
+            }
+            
+            // 1. 사용 가능한 총 포인트 계산
+            getAvailablePoints() {
+                let points = 10; // 레벨 1 시작
+                points += (this.level - 1); // 레벨업 보너스
+                if (this.questCompleted) {
+                    points += 18; // 퀘스트 보너스
+                }
+                return points;
+            }
+            
+            // 2. 사용한 총 포인트 계산
+            getUsedPoints() {
+                return this.skills.reduce((total, skill) => total + (skill.currentPoints || 0), 0);
+            }
+            
+            // 3. 필요 레벨 계산 (Math.ceil(usedPoints / 3) + 1)
+            getRequiredLevel() {
+                const usedPoints = this.getUsedPoints();
+                return Math.ceil(usedPoints / 3) + 1;
+            }
+            
+            // 4. 스탯 계산
+            getStats() {
+                return calculateStats(this.skills);
+            }
+            
+            // 5. 스탯 제한 검증 (힘+민첩+지력 ≤ 62)
+            validateStats() {
+                const stats = this.getStats();
+                const total = stats.strength + stats.agility + stats.intelligence;
+                return {
+                    valid: total <= STAT_LIMIT,
+                    total: total,
+                    remaining: STAT_LIMIT - total
+                };
+            }
+            
+            // 6. 전체 상태 가져오기
+            getStatus() {
+                const stats = this.getStats();
+                const validation = this.validateStats();
+                
+                return {
+                    level: this.level,
+                    availablePoints: this.getAvailablePoints(),
+                    usedPoints: this.getUsedPoints(),
+                    remainingPoints: this.getAvailablePoints() - this.getUsedPoints(),
+                    requiredLevel: this.getRequiredLevel(),
+                    stats: stats,
+                    statsValid: validation.valid,
+                    statTotal: validation.total,
+                    statRemaining: validation.remaining
+                };
+            }
         }
 
-        // 로컬 스토리지에서 불러오기
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('skillMappings');
+        // 전역 시뮬레이터 인스턴스
+        let skillSimulator = null;
+
+        // 시뮬레이터 인스턴스 초기화/업데이트
+        function updateSimulator() {
+            const skillsArray = convertSkillsToArray(currentSkills);
+            skillSimulator = new SkillSimulator(skillsArray);
+            skillSimulator.level = 1; // 필요시 레벨 설정
+            skillSimulator.questCompleted = questCompleted;
+        }
+
+        // 특정 레벨까지의 누적 포인트 계산
+        function getPointsAtLevel(level, withQuest = false) {
+            // 레벨 1: 10, 레벨 2: 11, ..., 레벨 n: 10 + (n-1) = 9 + n
+            const points = BASE_POINTS + (level - 1) * POINTS_PER_LEVEL;
+            return withQuest ? points + QUEST_BONUS : points;
+        }
+
+        // 포인트로 필요 레벨 계산 (기존 로직 유지 - UI용)
+        function getRequiredLevel(points) {
+            if (points <= BASE_POINTS) return 1;
+            // points = 10 + (level - 1) → level = points - 9
+            const level = points - BASE_POINTS + 1;
+            return Math.min(level, MAX_LEVEL);
+        }
+
+        // 퀘스트 필요 여부 확인
+        function needsQuest(points) {
+            const maxWithoutQuest = getPointsAtLevel(MAX_LEVEL, false); // 59
+            return points > maxWithoutQuest;
+        }
+
+        function updateStats() {
+            // 시뮬레이터 업데이트
+            updateSimulator();
+            
+            // 시뮬레이터를 통해 상태 가져오기
+            const status = skillSimulator.getStatus();
+            const stats = status.stats;
+            
+            const totalPoints = status.usedPoints;
+            const maxWithoutQuest = getPointsAtLevel(MAX_LEVEL, false); // 59
+            // 퀘스트 완료 여부에 따라 최대 포인트 결정
+            const availablePoints = questCompleted
+                ? getPointsAtLevel(MAX_LEVEL, true)  // 77
+                : maxWithoutQuest;                    // 59
+
+            // 필요 레벨 계산 (시뮬레이터의 로직 사용)
+            let requiredLevel = status.requiredLevel;
+            // 퀘스트 필요 여부: 퀘스트 미완료 상태에서 59 초과 시
+            const questRequired = !questCompleted && totalPoints > maxWithoutQuest;
+            // 포인트 초과 여부
+            const pointsExceeded = totalPoints > availablePoints;
+
+            // 스탯 값 가져오기
+            const strength = stats.strength;
+            const agility = stats.agility;
+            const intellect = stats.intelligence;
+
+            // 스탯 합계 제한 체크
+            const totalStats = strength + agility + intellect;
+            const statLimitExceeded = totalStats > STAT_LIMIT;
+            
+            // 습득한 스킬 수 계산
+            const skillsLearned = Object.values(currentSkills).filter(points => points > 0).length;
+
+            // UI 업데이트
+            document.getElementById('totalPoints').textContent = totalPoints;
+            document.getElementById('totalPoints').style.color = pointsExceeded ? '#ff4757' : '#667eea';
+
+            // 필요 레벨 표시 (시뮬레이터의 getRequiredLevel 사용)
+            let levelText = requiredLevel.toString();
+            if (questRequired) {
+                levelText = `${requiredLevel} (퀘스트 필요!)`;
+            } else if (questCompleted && totalPoints > maxWithoutQuest) {
+                levelText = `${requiredLevel} + 퀘스트`;
+            }
+            document.getElementById('requiredLevel').textContent = levelText;
+            document.getElementById('requiredLevel').style.color =
+                (requiredLevel > MAX_LEVEL || pointsExceeded) ? '#ff4757' : '#667eea';
+
+            document.getElementById('strengthStat').textContent = strength;
+            document.getElementById('agilityStat').textContent = agility;
+            document.getElementById('intellectStat').textContent = intellect;
+            document.getElementById('skillsLearned').textContent = `${skillsLearned} / 139`;
+            
+            // 럭 스탯 표시
+            document.getElementById('luckStat').textContent = stats.luck;
+
+            // 스탯 제한 표시 업데이트
+            const statLimitEl = document.getElementById('statLimit');
+            if (statLimitEl) {
+                statLimitEl.textContent = `${totalStats} / ${STAT_LIMIT}`;
+                statLimitEl.style.color = statLimitExceeded ? '#ff4757' : '#667eea';
+            }
+
+            // 남은 포인트 표시
+            const remainingEl = document.getElementById('remainingPoints');
+            if (remainingEl) {
+                const remaining = availablePoints - totalPoints;
+                remainingEl.textContent = remaining >= 0 ? remaining : 0;
+                remainingEl.style.color = remaining < 0 ? '#ff4757' : '#667eea';
+            }
+
+            // 퀘스트 보너스 텍스트 업데이트
+            const questBonusText = document.getElementById('questBonusText');
+            if (questBonusText) {
+                questBonusText.textContent = questCompleted ? '(+18 포인트 적용됨)' : '(+18 포인트)';
+                questBonusText.style.color = questCompleted ? '#00ff88' : '#a0aec0';
+            }
+        }
+        
+        function filterSkills() {
+            renderSkills();
+        }
+        
+        function saveProgress() {
+            const saveData = {
+                skills: currentSkills,
+                questCompleted: questCompleted
+            };
+            localStorage.setItem('skillSimulatorData', JSON.stringify(saveData));
+            alert('진행 상황이 저장되었습니다!');
+        }
+
+        function autoSave() {
+            const saveData = {
+                skills: currentSkills,
+                questCompleted: questCompleted
+            };
+            localStorage.setItem('skillSimulatorData', JSON.stringify(saveData));
+        }
+        
+        function loadProgress() {
+            const saved = localStorage.getItem('skillSimulatorData');
             if (saved) {
-                mappings = JSON.parse(saved);
-                createSkillSlots();
-                alert('로컬 스토리지에서 불러왔습니다!');
+                const data = JSON.parse(saved);
+                // 새 형식 (객체) 또는 이전 형식 (스킬만) 지원
+                if (data.skills) {
+                    currentSkills = data.skills;
+                    questCompleted = data.questCompleted || false;
+                } else {
+                    currentSkills = data;
+                    questCompleted = false;
+                }
+                initializeAllSkills();
+                document.getElementById('questCheckbox').checked = questCompleted;
+                updateStats();
+                renderSkills();
+                alert('저장된 데이터를 불러왔습니다!');
             } else {
                 alert('저장된 데이터가 없습니다.');
             }
         }
 
-        // 전체 초기화
-        function clearAllMappings() {
-            if (confirm('모든 맵핑을 초기화하시겠습니까?')) {
-                mappings = {};
-                createSkillSlots();
+        function resetAll() {
+            if (confirm('모든 스킬 포인트를 초기화하시겠습니까?')) {
+                // 모든 스킬을 0으로 초기화
+                currentSkills = {};
+                initializeAllSkills();
+                questCompleted = false;
+                document.getElementById('questCheckbox').checked = false;
+                updateStats();
+                renderSkills();
+                autoSave();
+                alert('초기화 완료!');
             }
         }
-
-        // 초기화
-        loadImageList();
-        loadFromLocalStorage(); // 자동으로 이전 작업 불러오기 시도
-        if (Object.keys(mappings).length === 0) {
-            createSkillSlots();
+        
+        function exportBuild() {
+            const buildData = Object.keys(currentSkills)
+                .filter(id => currentSkills[id] > 0)
+                .map(id => `${id}:${currentSkills[id]}`)
+                .join(',');
+            
+            const buildCode = btoa(buildData);
+            
+            document.getElementById('exportCode').textContent = buildCode;
+            document.getElementById('exportModal').classList.add('active');
         }
+        
+        function closeModal() {
+            document.getElementById('exportModal').classList.remove('active');
+        }
+        
+        function copyToClipboard() {
+            const code = document.getElementById('exportCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('빌드 코드가 클립보드에 복사되었습니다! 📋');
+            });
+        }
+        
+        function showTooltip(event, skillId) {
+            const skill = findSkillById(skillId);
+            if (!skill) return;
+            
+            const tooltip = document.getElementById('tooltip');
+            const current = currentSkills[skillId];
+            
+            tooltip.innerHTML = `
+                <strong>${skill.name}</strong><br>
+                현재 레벨: ${current} / ${skill.maxLevel}<br>
+                카테고리: ${getCategoryForSkillId(skillId)}
+            `;
+            
+            tooltip.style.display = 'block';
+            tooltip.style.left = event.pageX + 15 + 'px';
+            tooltip.style.top = event.pageY + 15 + 'px';
+        }
+        
+        function hideTooltip() {
+            document.getElementById('tooltip').style.display = 'none';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved data if exists
+            const saved = localStorage.getItem('skillSimulatorData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                // 새 형식 (객체) 또는 이전 형식 (스킬만) 지원
+                if (data.skills) {
+                    currentSkills = data.skills;
+                    questCompleted = data.questCompleted || false;
+                } else {
+                    currentSkills = data;
+                    questCompleted = false;
+                }
+                // 퀘스트 체크박스 상태 동기화
+                document.getElementById('questCheckbox').checked = questCompleted;
+            }
 
-        // ESC 키로 모달 닫기
+            // 누락된 스킬 ID를 0으로 초기화
+            initializeAllSkills();
+            
+            // 시뮬레이터 초기화
+            updateSimulator();
+
+            initializeTabs();
+            renderSkills();
+            updateStats();
+        });
+        
+        // Close modal on escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();

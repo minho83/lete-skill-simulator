@@ -1,0 +1,605 @@
+"<!DOCTYPE html>
+<html lang=""ko"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>뉴 레테 스킬 시뮬레이터</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 0;
+            min-height: 600px;
+        }
+        
+        .sidebar {
+            background: #f8f9fa;
+            border-right: 2px solid #e9ecef;
+            padding: 25px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+        
+        .stats-panel h2 {
+            font-size: 1.3em;
+            color: #495057;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .stat-group {
+            margin-bottom: 25px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .stat-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.95em;
+        }
+        
+        .stat-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 40px;
+            text-align: right;
+        }
+        
+        .points-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .points-summary h3 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+        
+        .points-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+        
+        .points-row strong {
+            font-weight: 700;
+        }
+        
+        .reset-button {
+            width: 100%;
+            padding: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        
+        .reset-button:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+        }
+        
+        .skills-area {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+        
+        .category-section {
+            margin-bottom: 40px;
+        }
+        
+        .category-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .skill-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        .skill-card.insufficient {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .skill-card.insufficient:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .skill-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .skill-name {
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 12px;
+            min-height: 2.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .skill-level-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .level-btn {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .level-btn:hover:not(:disabled) {
+            background: #667eea;
+            color: white;
+        }
+        
+        .level-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .level-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .skill-requirements {
+            margin-top: 12px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.85em;
+        }
+        
+        .req-label {
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .req-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .req-stat {
+            background: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        .req-stat.met {
+            color: #28a745;
+        }
+        
+        .req-stat.not-met {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                border-right: none;
+                border-bottom: 2px solid #e9ecef;
+                max-height: none;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class=""container"">
+        <div class=""header"">
+            <h1>🎮 뉴 레테 스킬 시뮬레이터</h1>
+            <p>스킬을 선택하고 레벨을 조정하여 필요한 스탯을 확인하세요</p>
+        </div>
+        
+        <div class=""main-content"">
+            <div class=""sidebar"">
+                <div class=""stats-panel"">
+                    <h2>📊 현재 스탯</h2>
+                    
+                    <div class=""points-summary"">
+                        <h3>포인트 정보</h3>
+                        <div class=""points-row"">
+                            <span>사용한 포인트</span>
+                            <strong id=""used-points"">0</strong>
+                        </div>
+                        <div class=""points-row"">
+                            <span>남은 포인트</span>
+                            <strong id=""remaining-points"">1000</strong>
+                        </div>
+                    </div>
+                    
+                    <div class=""stat-group"" id=""stats-container""></div>
+                    
+                    <button class=""reset-button"" id=""reset-btn"">🔄 전체 초기화</button>
+                </div>
+            </div>
+            
+            <div class=""skills-area"">
+                <div id=""skills-container""></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SKILLS_DATABASE = {};
+        
+        const STAT_TYPE_NAMES = {
+            str: 'STR',
+            dex: 'DEX',
+            int: 'INT',
+            luk: 'LUK',
+            wis: 'WIS',
+            con: 'CON',
+            cha: 'CHA',
+            sen: 'SEN',
+            hp: 'HP'
+        };
+        
+        const GAME_CONFIG = {
+            TOTAL_POINTS: 1000,
+            STAT_TYPES: ['str', 'dex', 'int', 'luk', 'wis', 'con', 'cha', 'sen', 'hp']
+        };
+    </script>
+
+    <script>
+        class SkillSimulator {
+            constructor() {
+                this.skillLevels = {};
+                this.currentStats = {};
+                this.usedPoints = 0;
+                
+                GAME_CONFIG.STAT_TYPES.forEach(stat => {
+                    this.currentStats[stat] = 0;
+                });
+                
+                Object.values(SKILLS_DATABASE).forEach(category => {
+                    category.forEach(skill => {
+                        this.skillLevels[skill.id] = 0;
+                    });
+                });
+            }
+            
+            setSkillLevel(skillId, level) {
+                const skill = this.findSkill(skillId);
+                if (!skill || level < 0 || level > skill.maxLevel) return false;
+                
+                this.skillLevels[skillId] = level;
+                this.recalculateStats();
+                return true;
+            }
+            
+            getSkillLevel(skillId) {
+                return this.skillLevels[skillId] || 0;
+            }
+            
+            findSkill(skillId) {
+                for (const category of Object.values(SKILLS_DATABASE)) {
+                    const skill = category.find(s => s.id === skillId);
+                    if (skill) return skill;
+                }
+                return null;
+            }
+            
+            recalculateStats() {
+                GAME_CONFIG.STAT_TYPES.forEach(stat => {
+                    this.currentStats[stat] = 0;
+                });
+                this.usedPoints = 0;
+                
+                Object.entries(this.skillLevels).forEach(([skillId, level]) => {
+                    if (level === 0) return;
+                    
+                    const skill = this.findSkill(skillId);
+                    if (!skill || !skill.statReqs || level > skill.statReqs.length) return;
+                    
+                    const reqForLevel = skill.statReqs[level - 1];
+                    Object.entries(reqForLevel).forEach(([stat, value]) => {
+                        if (value > this.currentStats[stat]) {
+                            const diff = value - this.currentStats[stat];
+                            this.currentStats[stat] = value;
+                            this.usedPoints += diff;
+                        }
+                    });
+                });
+            }
+            
+            canAffordSkill(skillId, level) {
+                if (level === 0) return true;
+                
+                const skill = this.findSkill(skillId);
+                if (!skill || level > skill.maxLevel || !skill.statReqs || level > skill.statReqs.length) return false;
+                
+                const tempSimulator = new SkillSimulator();
+                Object.entries(this.skillLevels).forEach(([id, lvl]) => {
+                    tempSimulator.skillLevels[id] = lvl;
+                });
+                tempSimulator.skillLevels[skillId] = level;
+                tempSimulator.recalculateStats();
+                
+                return tempSimulator.usedPoints <= GAME_CONFIG.TOTAL_POINTS;
+            }
+            
+            getRequirementsForSkill(skillId, level) {
+                const skill = this.findSkill(skillId);
+                if (!skill || level === 0 || !skill.statReqs || level > skill.statReqs.length) return null;
+                return skill.statReqs[level - 1];
+            }
+            
+            reset() {
+                Object.keys(this.skillLevels).forEach(id => {
+                    this.skillLevels[id] = 0;
+                });
+                this.recalculateStats();
+            }
+            
+            getRemainingPoints() {
+                return GAME_CONFIG.TOTAL_POINTS - this.usedPoints;
+            }
+        }
+    </script>
+
+    <script>
+        class SimulatorUI {
+            constructor(simulator) {
+                this.simulator = simulator;
+                this.initialize();
+            }
+            
+            initialize() {
+                this.renderStats();
+                this.renderSkills();
+                this.attachEventListeners();
+            }
+            
+            renderStats() {
+                const container = document.getElementById('stats-container');
+                container.innerHTML = GAME_CONFIG.STAT_TYPES.map(stat => `
+                    <div class=""stat-item"">
+                        <span class=""stat-label"">${STAT_TYPE_NAMES[stat]}</span>
+                        <span class=""stat-value"" id=""stat-${stat}"">0</span>
+                    </div>
+                `).join('');
+                
+                this.updateStatsDisplay();
+            }
+            
+            updateStatsDisplay() {
+                GAME_CONFIG.STAT_TYPES.forEach(stat => {
+                    const elem = document.getElementById(`stat-${stat}`);
+                    if (elem) {
+                        elem.textContent = this.simulator.currentStats[stat];
+                    }
+                });
+                
+                const usedElem = document.getElementById('used-points');
+                const remainingElem = document.getElementById('remaining-points');
+                if (usedElem) usedElem.textContent = this.simulator.usedPoints;
+                if (remainingElem) remainingElem.textContent = this.simulator.getRemainingPoints();
+            }
+            
+            renderSkills() {
+                const container = document.getElementById('skills-container');
+                container.innerHTML = Object.entries(SKILLS_DATABASE).map(([category, skills]) => `
+                    <div class=""category-section"">
+                        <div class=""category-header"">${category}</div>
+                        <div class=""skills-grid"">
+                            ${skills.map(skill => this.renderSkillCard(skill)).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            renderSkillCard(skill) {
+                const level = this.simulator.getSkillLevel(skill.id);
+                const requirements = level > 0 ? this.simulator.getRequirementsForSkill(skill.id, level) : null;
+                
+                const canIncrease = level < skill.maxLevel && this.simulator.canAffordSkill(skill.id, level + 1);
+                const canDecrease = level > 0;
+                
+                let reqHtml = '';
+                if (requirements) {
+                    const reqStats = Object.entries(requirements)
+                        .filter(([_, val]) => val > 0)
+                        .map(([stat, val]) => {
+                            const met = this.simulator.currentStats[stat] >= val;
+                            return `<span class=""req-stat ${met ? 'met' : 'not-met'}"">${STAT_TYPE_NAMES[stat]}: ${val}</span>`;
+                        });
+                    
+                    if (reqStats.length > 0) {
+                        reqHtml = `
+                            <div class=""skill-requirements"">
+                                <div class=""req-label"">필요 스탯</div>
+                                <div class=""req-stats"">${reqStats.join('')}</div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                return `
+                    <div class=""skill-card"" data-skill-id=""${skill.id}"">
+                        <div class=""skill-icon"">${skill.imageNum || '🎯'}</div>
+                        <div class=""skill-name"">${skill.name}</div>
+                        <div class=""skill-level-control"">
+                            <button class=""level-btn"" data-action=""decrease"" ${!canDecrease ? 'disabled' : ''}>−</button>
+                            <div class=""level-display"">${level} / ${skill.maxLevel}</div>
+                            <button class=""level-btn"" data-action=""increase"" ${!canIncrease ? 'disabled' : ''}>+</button>
+                        </div>
+                        ${reqHtml}
+                    </div>
+                `;
+            }
+            
+            attachEventListeners() {
+                document.getElementById('skills-container').addEventListener('click', (e) => {
+                    const btn = e.target.closest('.level-btn');
+                    if (!btn || btn.disabled) return;
+                    
+                    const card = btn.closest('.skill-card');
+                    const skillId = card.dataset.skillId;
+                    const action = btn.dataset.action;
+                    const currentLevel = this.simulator.getSkillLevel(skillId);
+                    
+                    let newLevel = currentLevel;
+                    if (action === 'increase') {
+                        newLevel = currentLevel + 1;
+                    } else if (action === 'decrease') {
+                        newLevel = currentLevel - 1;
+                    }
+                    
+                    if (this.simulator.setSkillLevel(skillId, newLevel)) {
+                        this.updateStatsDisplay();
+                        this.renderSkills();
+                    }
+                });
+                
+                document.getElementById('reset-btn').addEventListener('click', () => {
+                    if (confirm('모든 스킬을 초기화하시겠습니까?')) {
+                        this.simulator.reset();
+                        this.updateStatsDisplay();
+                        this.renderSkills();
+                    }
+                });
+            }
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const simulator = new SkillSimulator();
+            const ui = new SimulatorUI(simulator);
+            console.log('뉴 레테 스킬 시뮬레이터가 로드되었습니다!');
+            console.log('총 스킬 수:', Object.values(SKILLS_DATABASE).reduce((sum, cat) => sum + cat.length, 0));
+        });
+    </script>
+</body>
+</html>"

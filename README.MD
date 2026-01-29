@@ -56,7 +56,7 @@ git push -u origin main
 
 ### 4단계: 웹사이트 접속
 - 몇 분 후 다음 주소로 접속 가능:
-  - `https://your-username.github.io/lete-skill-simulator/`
+  - `https://minho83.github.io/lete-skill-simulator/`
 - 배포 상태는 저장소의 **Settings → Pages**에서 확인 가능
 
 ### 📝 참고사항

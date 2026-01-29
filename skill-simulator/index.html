@@ -612,173 +612,174 @@
     
     <script>
         // skill_mapping.md 기반 139개 스킬 데이터
+        // GAME-DATA.JSON 기반 스킬 데이터 (statType: 각 스킬의 요구 스탯 타입)
         const skillsData = {
             "화염마법": [
-                {id: 1, name: "화염화살", maxLevel: 5},
-                {id: 2, name: "화염구", maxLevel: 5},
-                {id: 3, name: "이글거리는 주먹", maxLevel: 5},
-                {id: 4, name: "꺼지지않는 지옥불", maxLevel: 5},
-                {id: 5, name: "태양풍", maxLevel: 5},
-                {id: 6, name: "불기둥", maxLevel: 5},
-                {id: 7, name: "플레어", maxLevel: 5},
-                {id: 8, name: "화염마법숙련", maxLevel: 5},
-                {id: 9, name: "화형", maxLevel: 5},
-                {id: 10, name: "화상", maxLevel: 5}
+                {id: 1, name: "화염화살", maxLevel: 5, statType: "intelligence"},
+                {id: 2, name: "화염구", maxLevel: 5, statType: "intelligence"},
+                {id: 3, name: "이글거리는 주먹", maxLevel: 5, statType: "intelligence"},
+                {id: 4, name: "꺼지지않는 지옥불", maxLevel: 5, statType: "intelligence"},
+                {id: 5, name: "태양풍", maxLevel: 5, statType: "intelligence"},
+                {id: 6, name: "불기둥", maxLevel: 5, statType: "intelligence"},
+                {id: 7, name: "플레어", maxLevel: 5, statType: "intelligence"},
+                {id: 8, name: "화염마법숙련", maxLevel: 5, statType: "intelligence"},
+                {id: 9, name: "화형", maxLevel: 5, statType: "intelligence"},
+                {id: 10, name: "화상", maxLevel: 5, statType: "intelligence"}
             ],
             "얼음마법": [
-                {id: 11, name: "얼음화살", maxLevel: 5},
-                {id: 12, name: "얼음창", maxLevel: 5},
-                {id: 13, name: "저체온증", maxLevel: 5},
-                {id: 14, name: "한기 작렬", maxLevel: 5},
-                {id: 15, name: "아이스 노바", maxLevel: 5},
-                {id: 16, name: "혹한", maxLevel: 5},
-                {id: 17, name: "냉기 팽창", maxLevel: 5},
-                {id: 18, name: "얼음 송곳", maxLevel: 5},
-                {id: 19, name: "죽음의 한기", maxLevel: 5},
-                {id: 20, name: "얼음마법숙련", maxLevel: 5}
+                {id: 11, name: "얼음화살", maxLevel: 5, statType: "intelligence"},
+                {id: 12, name: "얼음창", maxLevel: 5, statType: "intelligence"},
+                {id: 13, name: "저체온증", maxLevel: 5, statType: "intelligence"},
+                {id: 14, name: "한기 작렬", maxLevel: 5, statType: "intelligence"},
+                {id: 15, name: "아이스 노바", maxLevel: 5, statType: "intelligence"},
+                {id: 16, name: "혹한", maxLevel: 5, statType: "intelligence"},
+                {id: 17, name: "냉기 팽창", maxLevel: 5, statType: "intelligence"},
+                {id: 18, name: "얼음 송곳", maxLevel: 5, statType: "intelligence"},
+                {id: 19, name: "죽음의 한기", maxLevel: 5, statType: "intelligence"},
+                {id: 20, name: "얼음마법숙련", maxLevel: 5, statType: "intelligence"}
             ],
             "전기마법": [
-                {id: 21, name: "번개화살", maxLevel: 5},
-                {id: 22, name: "뇌격", maxLevel: 5},
-                {id: 23, name: "방전", maxLevel: 5},
-                {id: 24, name: "불안정한낙뢰", maxLevel: 5},
-                {id: 25, name: "초방전 유도체", maxLevel: 5},
-                {id: 26, name: "적란운", maxLevel: 5},
-                {id: 27, name: "뇌기창", maxLevel: 5},
-                {id: 28, name: "번개 마법 숙련", maxLevel: 5},
-                {id: 29, name: "태풍", maxLevel: 5},
-                {id: 30, name: "전하", maxLevel: 5}
+                {id: 21, name: "번개화살", maxLevel: 5, statType: "intelligence"},
+                {id: 22, name: "뇌격", maxLevel: 5, statType: "intelligence"},
+                {id: 23, name: "방전", maxLevel: 5, statType: "intelligence"},
+                {id: 24, name: "불안정한낙뢰", maxLevel: 5, statType: "intelligence"},
+                {id: 25, name: "초방전 유도체", maxLevel: 5, statType: "intelligence"},
+                {id: 26, name: "적란운", maxLevel: 5, statType: "intelligence"},
+                {id: 27, name: "뇌기창", maxLevel: 5, statType: "intelligence"},
+                {id: 28, name: "번개 마법 숙련", maxLevel: 5, statType: "intelligence"},
+                {id: 29, name: "태풍", maxLevel: 5, statType: "intelligence"},
+                {id: 30, name: "전하", maxLevel: 5, statType: "intelligence"}
             ],
             "초능력마법": [
-                {id: 31, name: "초능력 방패", maxLevel: 5},
-                {id: 32, name: "마나 보호막", maxLevel: 5}
+                {id: 31, name: "초능력 방패", maxLevel: 5, statType: "intelligence"},
+                {id: 32, name: "마나 보호막", maxLevel: 5, statType: "intelligence"}
             ],
             "융합마법": [
-                {id: 33, name: "용암 도끼", maxLevel: 5},
-                {id: 34, name: "초열 선륜", maxLevel: 5},
-                {id: 35, name: "고드름쇄도", maxLevel: 5}
+                {id: 33, name: "용암 도끼", maxLevel: 5, statType: "intelligence"},
+                {id: 34, name: "초열 선륜", maxLevel: 5, statType: "intelligence"},
+                {id: 35, name: "고드름쇄도", maxLevel: 5, statType: "intelligence"}
             ],
             "힘능력": [
-                {id: 36, name: "공격 자세", maxLevel: 5},
-                {id: 37, name: "무기의 달인", maxLevel: 5},
-                {id: 38, name: "뭉개기", maxLevel: 5},
-                {id: 39, name: "강력한 반격", maxLevel: 5},
-                {id: 40, name: "깊은 상처", maxLevel: 5},
-                {id: 41, name: "충격", maxLevel: 5},
-                {id: 42, name: "마무리 일격", maxLevel: 5},
-                {id: 43, name: "전투형 근육", maxLevel: 5},
-                {id: 44, name: "뇌진탕", maxLevel: 5},
-                {id: 45, name: "전투 호흡", maxLevel: 5}
+                {id: 36, name: "공격 자세", maxLevel: 5, statType: "strength"},
+                {id: 37, name: "무기의 달인", maxLevel: 5, statType: "strength"},
+                {id: 38, name: "뭉개기", maxLevel: 5, statType: "strength"},
+                {id: 39, name: "강력한 반격", maxLevel: 5, statType: "strength"},
+                {id: 40, name: "깊은 상처", maxLevel: 5, statType: "strength"},
+                {id: 41, name: "충격", maxLevel: 5, statType: "strength"},
+                {id: 42, name: "마무리 일격", maxLevel: 5, statType: "strength"},
+                {id: 43, name: "전투형 근육", maxLevel: 5, statType: "strength"},
+                {id: 44, name: "뇌진탕", maxLevel: 5, statType: "strength"},
+                {id: 45, name: "전투 호흡", maxLevel: 5, statType: "strength"}
             ],
             "민첩능력": [
-                {id: 46, name: "급소 연구", maxLevel: 5},
-                {id: 47, name: "급소연구 II", maxLevel: 5},
-                {id: 48, name: "치명적인 사격", maxLevel: 5},
-                {id: 49, name: "약점", maxLevel: 5},
-                {id: 50, name: "얼굴 뭉개기", maxLevel: 5},
-                {id: 51, name: "틈새 공략", maxLevel: 5},
-                {id: 52, name: "반격", maxLevel: 5},
-                {id: 53, name: "숙련된 처내기", maxLevel: 5},
-                {id: 54, name: "발전된 급소 연구", maxLevel: 5},
-                {id: 55, name: "재빠른 몸놀림", maxLevel: 5}
+                {id: 46, name: "급소 연구", maxLevel: 5, statType: "agility"},
+                {id: 47, name: "급소연구 II", maxLevel: 5, statType: "agility"},
+                {id: 48, name: "치명적인 사격", maxLevel: 5, statType: "agility"},
+                {id: 49, name: "약점", maxLevel: 5, statType: "agility"},
+                {id: 50, name: "얼굴 뭉개기", maxLevel: 5, statType: "agility"},
+                {id: 51, name: "틈새 공략", maxLevel: 5, statType: "agility"},
+                {id: 52, name: "반격", maxLevel: 5, statType: "agility"},
+                {id: 53, name: "숙련된 처내기", maxLevel: 5, statType: "agility"},
+                {id: 54, name: "발전된 급소 연구", maxLevel: 5, statType: "agility"},
+                {id: 55, name: "재빠른 몸놀림", maxLevel: 5, statType: "agility"}
             ],
             "보조능력": [
-                {id: 56, name: "몹집 불리기", maxLevel: 5},
-                {id: 57, name: "무술", maxLevel: 5},
-                {id: 58, name: "마나 샘", maxLevel: 5},
-                {id: 59, name: "빠른 신진대사", maxLevel: 5},
-                {id: 60, name: "죽고자 하면 살 것이다", maxLevel: 5},
-                {id: 61, name: "마법 유물", maxLevel: 5},
-                {id: 62, name: "아슬아슬한 처내기", maxLevel: 5},
-                {id: 63, name: "손은 눈보다 빠르다", maxLevel: 5},
-                {id: 64, name: "마력 조작", maxLevel: 5},
-                {id: 65, name: "자연 친화력", maxLevel: 5},
-                {id: 66, name: "운수 좋은 날", maxLevel: 5},
-                {id: 67, name: "환류", maxLevel: 5},
-                {id: 68, name: "돌 피부", maxLevel: 5},
-                {id: 69, name: "부등가 교환", maxLevel: 5},
-                {id: 70, name: "원소 친화력", maxLevel: 5}
+                {id: 56, name: "몹집 불리기", maxLevel: 5, statType: "common"},
+                {id: 57, name: "무술", maxLevel: 5, statType: "common"},
+                {id: 58, name: "마나 샘", maxLevel: 5, statType: "common"},
+                {id: 59, name: "빠른 신진대사", maxLevel: 5, statType: "common"},
+                {id: 60, name: "죽고자 하면 살 것이다", maxLevel: 5, statType: "common"},
+                {id: 61, name: "마법 유물", maxLevel: 5, statType: "common"},
+                {id: 62, name: "아슬아슬한 처내기", maxLevel: 5, statType: "common"},
+                {id: 63, name: "손은 눈보다 빠르다", maxLevel: 5, statType: "common"},
+                {id: 64, name: "마력 조작", maxLevel: 5, statType: "common"},
+                {id: 65, name: "자연 친화력", maxLevel: 5, statType: "common"},
+                {id: 66, name: "운수 좋은 날", maxLevel: 5, statType: "common"},
+                {id: 67, name: "환류", maxLevel: 5, statType: "common"},
+                {id: 68, name: "돌 피부", maxLevel: 5, statType: "common"},
+                {id: 69, name: "부등가 교환", maxLevel: 5, statType: "common"},
+                {id: 70, name: "원소 친화력", maxLevel: 5, statType: "common"}
             ],
             "조화능력": [
-                {id: 71, name: "필살", maxLevel: 5},
-                {id: 72, name: "방랑 무사", maxLevel: 5},
-                {id: 73, name: "단전 개방", maxLevel: 5},
-                {id: 74, name: "근육 밀도 증가", maxLevel: 5},
-                {id: 75, name: "최상위 포식자", maxLevel: 5},
-                {id: 76, name: "폭발적 마나 분출", maxLevel: 5},
-                {id: 77, name: "만인지적", maxLevel: 5},
-                {id: 78, name: "환골탈태", maxLevel: 5},
-                {id: 79, name: "그림자의 길", maxLevel: 5},
-                {id: 80, name: "체내 마나 순환", maxLevel: 5},
-                {id: 81, name: "워록", maxLevel: 5},
-                {id: 82, name: "잔류 마나 응결", maxLevel: 5},
-                {id: 83, name: "근성 강화", maxLevel: 5},
-                {id: 84, name: "깨달음", maxLevel: 5}
+                {id: 71, name: "필살", maxLevel: 5, statType: "strength"},
+                {id: 72, name: "방랑 무사", maxLevel: 5, statType: "strength"},
+                {id: 73, name: "단전 개방", maxLevel: 5, statType: "strength"},
+                {id: 74, name: "근육 밀도 증가", maxLevel: 5, statType: "strength"},
+                {id: 75, name: "최상위 포식자", maxLevel: 5, statType: "strength"},
+                {id: 76, name: "폭발적 마나 분출", maxLevel: 5, statType: "strength"},
+                {id: 77, name: "만인지적", maxLevel: 5, statType: "strength"},
+                {id: 78, name: "환골탈태", maxLevel: 5, statType: "strength"},
+                {id: 79, name: "그림자의 길", maxLevel: 5, statType: "strength"},
+                {id: 80, name: "체내 마나 순환", maxLevel: 5, statType: "strength"},
+                {id: 81, name: "워록", maxLevel: 5, statType: "strength"},
+                {id: 82, name: "잔류 마나 응결", maxLevel: 5, statType: "strength"},
+                {id: 83, name: "근성 강화", maxLevel: 5, statType: "strength"},
+                {id: 84, name: "깨달음", maxLevel: 5, statType: "strength"}
             ],
             "용맹특성": [
-                {id: 85, name: "하프 소딩", maxLevel: 3},
-                {id: 86, name: "쿤스트 데스 페히톤스", maxLevel: 3},
-                {id: 87, name: "막을 수 없는 자", maxLevel: 3},
-                {id: 88, name: "전쟁광", maxLevel: 3},
-                {id: 89, name: "수박 깨기", maxLevel: 3},
-                {id: 90, name: "방벽", maxLevel: 3},
-                {id: 91, name: "처형자", maxLevel: 3},
-                {id: 92, name: "강인함", maxLevel: 3},
-                {id: 93, name: "중보병", maxLevel: 3},
-                {id: 94, name: "도살자", maxLevel: 3},
-                {id: 95, name: "초인적 반응", maxLevel: 3},
-                {id: 96, name: "가시 갑옷", maxLevel: 3},
-                {id: 97, name: "묵사발 A", maxLevel: 3},
-                {id: 98, name: "나는 서서 죽는다", maxLevel: 3},
-                {id: 99, name: "묵사발 B", maxLevel: 3}
+                {id: 85, name: "하프 소딩", maxLevel: 3, statType: "strength"},
+                {id: 86, name: "쿤스트 데스 페히톤스", maxLevel: 3, statType: "strength"},
+                {id: 87, name: "막을 수 없는 자", maxLevel: 3, statType: "strength"},
+                {id: 88, name: "전쟁광", maxLevel: 3, statType: "strength"},
+                {id: 89, name: "수박 깨기", maxLevel: 3, statType: "strength"},
+                {id: 90, name: "방벽", maxLevel: 3, statType: "strength"},
+                {id: 91, name: "처형자", maxLevel: 3, statType: "strength"},
+                {id: 92, name: "강인함", maxLevel: 3, statType: "strength"},
+                {id: 93, name: "중보병", maxLevel: 3, statType: "strength"},
+                {id: 94, name: "도살자", maxLevel: 3, statType: "strength"},
+                {id: 95, name: "초인적 반응", maxLevel: 3, statType: "strength"},
+                {id: 96, name: "가시 갑옷", maxLevel: 3, statType: "strength"},
+                {id: 97, name: "묵사발 A", maxLevel: 3, statType: "strength"},
+                {id: 98, name: "나는 서서 죽는다", maxLevel: 3, statType: "strength"},
+                {id: 99, name: "묵사발 B", maxLevel: 3, statType: "strength"}
             ],
             "강인특성": [
-                {id: 100, name: "비장의 수", maxLevel: 3},
-                {id: 101, name: "근주구력 강화", maxLevel: 3},
-                {id: 102, name: "지저분한 절단", maxLevel: 3},
-                {id: 103, name: "캄프링겐", maxLevel: 3},
-                {id: 104, name: "팡크라티온", maxLevel: 3},
-                {id: 105, name: "무자비한 처형", maxLevel: 3},
-                {id: 106, name: "결투용 검술", maxLevel: 3},
-                {id: 107, name: "콤비네이션", maxLevel: 3},
-                {id: 108, name: "쌍수 무기", maxLevel: 3},
-                {id: 109, name: "인피르무스", maxLevel: 3},
-                {id: 110, name: "보디 블로", maxLevel: 3},
-                {id: 111, name: "투지", maxLevel: 3},
-                {id: 112, name: "롤링 펀치", maxLevel: 3}
+                {id: 100, name: "비장의 수", maxLevel: 3, statType: "strength"},
+                {id: 101, name: "근주구력 강화", maxLevel: 3, statType: "strength"},
+                {id: 102, name: "지저분한 절단", maxLevel: 3, statType: "strength"},
+                {id: 103, name: "캄프링겐", maxLevel: 3, statType: "strength"},
+                {id: 104, name: "팡크라티온", maxLevel: 3, statType: "strength"},
+                {id: 105, name: "무자비한 처형", maxLevel: 3, statType: "strength"},
+                {id: 106, name: "결투용 검술", maxLevel: 3, statType: "strength"},
+                {id: 107, name: "콤비네이션", maxLevel: 3, statType: "strength"},
+                {id: 108, name: "쌍수 무기", maxLevel: 3, statType: "strength"},
+                {id: 109, name: "인피르무스", maxLevel: 3, statType: "strength"},
+                {id: 110, name: "보디 블로", maxLevel: 3, statType: "strength"},
+                {id: 111, name: "투지", maxLevel: 3, statType: "strength"},
+                {id: 112, name: "롤링 펀치", maxLevel: 3, statType: "strength"}
             ],
             "고독특성": [
-                {id: 113, name: "연격", maxLevel: 3},
-                {id: 114, name: "뛰어난 손재주", maxLevel: 3},
-                {id: 115, name: "어둠숲 궁술", maxLevel: 3},
-                {id: 116, name: "손목 공격", maxLevel: 3},
-                {id: 117, name: "스위시 버클러", maxLevel: 3},
-                {id: 118, name: "연사", maxLevel: 3},
-                {id: 119, name: "예리한 칼날", maxLevel: 3},
-                {id: 120, name: "라이슬로퍼", maxLevel: 3},
-                {id: 121, name: "저격수", maxLevel: 3},
-                {id: 122, name: "예리한 칼날II", maxLevel: 3},
-                {id: 123, name: "사냥꾼", maxLevel: 3},
-                {id: 124, name: "머리 겨냥", maxLevel: 3},
-                {id: 125, name: "연격 II", maxLevel: 3}
+                {id: 113, name: "연격", maxLevel: 3, statType: "agility"},
+                {id: 114, name: "뛰어난 손재주", maxLevel: 3, statType: "agility"},
+                {id: 115, name: "어둠숲 궁술", maxLevel: 3, statType: "agility"},
+                {id: 116, name: "손목 공격", maxLevel: 3, statType: "agility"},
+                {id: 117, name: "스위시 버클러", maxLevel: 3, statType: "agility"},
+                {id: 118, name: "연사", maxLevel: 3, statType: "agility"},
+                {id: 119, name: "예리한 칼날", maxLevel: 3, statType: "agility"},
+                {id: 120, name: "라이슬로퍼", maxLevel: 3, statType: "agility"},
+                {id: 121, name: "저격수", maxLevel: 3, statType: "agility"},
+                {id: 122, name: "예리한 칼날II", maxLevel: 3, statType: "agility"},
+                {id: 123, name: "사냥꾼", maxLevel: 3, statType: "agility"},
+                {id: 124, name: "머리 겨냥", maxLevel: 3, statType: "agility"},
+                {id: 125, name: "연격 II", maxLevel: 3, statType: "agility"}
             ],
             "교활특성": [
-                {id: 126, name: "은신", maxLevel: 3},
-                {id: 127, name: "경추 절단", maxLevel: 3},
-                {id: 128, name: "낮은 자세", maxLevel: 3},
-                {id: 129, name: "난도질", maxLevel: 3},
-                {id: 130, name: "희미한 존재감", maxLevel: 3},
-                {id: 131, name: "가벼운 발놀림", maxLevel: 3},
-                {id: 132, name: "신경 끊기", maxLevel: 3},
-                {id: 133, name: "공중 암살", maxLevel: 3},
-                {id: 134, name: "수술", maxLevel: 3}
+                {id: 126, name: "은신", maxLevel: 3, statType: "agility"},
+                {id: 127, name: "경추 절단", maxLevel: 3, statType: "agility"},
+                {id: 128, name: "낮은 자세", maxLevel: 3, statType: "agility"},
+                {id: 129, name: "난도질", maxLevel: 3, statType: "agility"},
+                {id: 130, name: "희미한 존재감", maxLevel: 3, statType: "agility"},
+                {id: 131, name: "가벼운 발놀림", maxLevel: 3, statType: "agility"},
+                {id: 132, name: "신경 끊기", maxLevel: 3, statType: "agility"},
+                {id: 133, name: "공중 암살", maxLevel: 3, statType: "agility"},
+                {id: 134, name: "수술", maxLevel: 3, statType: "agility"}
             ],
             "유용특성": [
-                {id: 135, name: "도약", maxLevel: 1},
-                {id: 136, name: "집중", maxLevel: 3},
-                {id: 137, name: "긴 도약", maxLevel: 3},
-                {id: 138, name: "회피", maxLevel: 3},
-                {id: 139, name: "집중 II", maxLevel: 3}
+                {id: 135, name: "도약", maxLevel: 1, statType: "luck"},
+                {id: 136, name: "집중", maxLevel: 3, statType: "luck"},
+                {id: 137, name: "긴 도약", maxLevel: 3, statType: "luck"},
+                {id: 138, name: "회피", maxLevel: 3, statType: "luck"},
+                {id: 139, name: "집중 II", maxLevel: 3, statType: "luck"}
             ]
         };
 
@@ -906,11 +907,21 @@
                 skill.name.toLowerCase().includes(searchTerm)
             );
             
+            // 스탯 타입 한글 표시
+            const statTypeLabels = {
+                "strength": "힘",
+                "agility": "민첩",
+                "intelligence": "지력",
+                "common": "공통",
+                "luck": "운"
+            };
+
             container.innerHTML = '<div class="skills-grid">' + filteredSkills.map(skill => {
                 const current = currentSkills[skill.id];
                 const cardClass = current === 0 ? 'unpurchased' : (current === skill.maxLevel ? 'max-level' : '');
                 const progress = (current / skill.maxLevel) * 100;
                 const imagePath = getSkillImagePath(skill.id);
+                const statLabel = statTypeLabels[skill.statType] || '?';
 
                 // 이미지가 있으면 이미지 표시, 없으면 기본 아이콘
                 const iconContent = imagePath
@@ -923,7 +934,7 @@
                             ${iconContent}
                         </div>
                         <div class="skill-name">${skill.name}</div>
-                        <div class="skill-max-level">MAX Lv.${skill.maxLevel}</div>
+                        <div class="skill-max-level">MAX Lv.${skill.maxLevel} <span style="color: ${categoryColors[currentCategory]}; font-weight: 600;">[${statLabel}]</span></div>
                         <div class="skill-controls">
                             <button class="skill-btn" onclick="decreaseSkill(${skill.id})" ${current === 0 ? 'disabled' : ''}>
                                 <i class="fas fa-minus"></i>
@@ -1066,7 +1077,12 @@
             "유용특성": "luck"          // 운: STR/AGI/INT 합계에 미포함
         };
 
-        // 스탯 계산 함수 (카테고리별로 분류)
+        // 스탯 계산 함수 (스킬별 statType 기반)
+        // GAME-DATA.JSON calculationLogic:
+        //   step1: 카테고리별 스킬포인트 합산
+        //   step2: 카테고리→스탯타입 매핑 후 합산
+        //   step3: 최소값 1 보장
+        //   step4: STR + AGI + INT ≤ 62 검증
         function calculateStats(skillsArray) {
             let strength = 0;
             let agility = 0;
@@ -1076,8 +1092,9 @@
             skillsArray.forEach(skill => {
                 if (skill.currentPoints === 0) return;
 
-                const category = getCategoryForSkillId(skill.id);
-                const statType = categoryStatMapping[category];
+                // 스킬 데이터에서 statType 직접 조회
+                const skillData = findSkillById(skill.id);
+                const statType = skillData ? skillData.statType : categoryStatMapping[getCategoryForSkillId(skill.id)];
                 const points = skill.currentPoints;
 
                 if (statType === "strength") strength += points;
@@ -1359,10 +1376,12 @@
             const tooltip = document.getElementById('tooltip');
             const current = currentSkills[skillId];
             
+            const statLabels = {strength:"힘", agility:"민첩", intelligence:"지력", common:"공통", luck:"운"};
             tooltip.innerHTML = `
                 <strong>${skill.name}</strong><br>
                 현재 레벨: ${current} / ${skill.maxLevel}<br>
-                카테고리: ${getCategoryForSkillId(skillId)}
+                카테고리: ${getCategoryForSkillId(skillId)}<br>
+                요구 스탯: ${statLabels[skill.statType] || '?'}
             `;
             
             tooltip.style.display = 'block';
